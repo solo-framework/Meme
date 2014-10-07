@@ -12,7 +12,8 @@
     "require": {
 
 	    "symfony/yaml": "2.*",
-	    "symfony/console": "2.*"
+	    "symfony/console": "2.*",
+		"symfony/finder": "2.6.*@dev"
     },
 	"autoload": {
 		"psr-0": {
