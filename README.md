@@ -1,4 +1,4 @@
 Meme
 ====
 
-PHP Deploy tool
+PHP build tool
