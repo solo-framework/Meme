@@ -3,6 +3,9 @@
 use Meme\Console;
 use Meme\Project;
 
+use Meme\Task\Chmod;
+use Meme\Task\Copy;
+use Meme\Task\Replace;
 use Meme\Types;
 use Meme\Target;
 
@@ -21,7 +24,7 @@ $startTarget = new Target("start", function(){
 
 	Console::info("Hello, world!");
 
-} /*, add dependencies here*/);
+} , "middle"/*, add dependencies here*/);
 
 
 /**
@@ -30,16 +33,14 @@ $startTarget = new Target("start", function(){
 $mT = new Target("middle", function(){
 
 	$fs = new Types\FileSet(
-		"../test/",
-		array("**/*.phar", "**/*.zip", "*.json")
+		"..",
+		array("*.txt")
 	);
 
 	$res = $fs->getFiles(true);
+//	print_r($res);
 
-//	new \Meme\Task\Delete($fs);
-	print_r($res);
-
-	//echo "\033[31mred\033[37m\r\n";
+//	new Copy($res, "./1/2/3");
 
 }, "end");
 

@@ -10,11 +10,13 @@
 
 namespace Meme\Command;
 
+use Meme\Config;
 use Meme\Project;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
 
 class Run extends BaseCommand
 {
@@ -39,14 +41,17 @@ class Run extends BaseCommand
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-		$env = $input->getOption("env");
-		if (!$env)
+		$envName = $input->getOption("env");
+		if (!$envName)
 			throw new \Exception("You should set an environment name");
 
 		$configDir = getcwd() . "/.meme";
-		$env = $configDir . "/{$env}.php";
+		$env = $configDir . "/{$envName}.php";
 
-		$project = new Project("name from config", "start");
+		$yml = $configDir . "/{$envName}.yml";
+		Config::init($yml);
+
+		$project = new Project(Config::get("name"), "start");
 		include $env;
 		$project->run("start");
 	}

@@ -10,6 +10,7 @@
 
 namespace Meme\Task;
 
+use Meme\Console;
 use Meme\Types\FileSet;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -22,7 +23,8 @@ class Delete extends Task
 	 */
 	public function __construct($target, $deleteEmptyDirs = true)
 	{
-		echo ">> Start delete task\n";
+		//echo ">> Start delete task\n";
+		Console::info(">> Start delete task");
 		clearstatcache();
 
 		if ($target instanceof FileSet)

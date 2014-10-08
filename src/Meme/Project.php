@@ -41,11 +41,22 @@ class Project
 	{
 		$start = $start = microtime(true);
 
-		Console::info("------------ Start Meme project '{$this->name}' ------------");
+		Console::info("
+
+========================================
+   ____ __    ___   ____ __    ___
+  / __ `__ \ / _ \ / __ `__ \ / _ \
+ / / / / / /(  __// / / / / /(  __/
+/_/ /_/ /_/  \__//_/ /_/ /_/  \__/
+
+========================================
+
+		");
+		Console::info("------------ Start Meme project '{$this->name}' ------------\n");
 		$this->runRecursive($this->getTargetByName($name));
 		$time = round(microtime(true) - $start, 3);
 
-		Console::info("------------ Meme has finished the project '{$this->name}', it took {$time} sec. ------------\n");
+		Console::info("\n------------ Meme has finished the project '{$this->name}', it took {$time} sec. ------------\n");
 	}
 
 	protected function runRecursive(Target $target)
