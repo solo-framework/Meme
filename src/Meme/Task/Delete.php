@@ -10,23 +10,29 @@
 
 namespace Meme\Task;
 
+use Meme\Types\FileSet;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Delete extends Task
 {
 
-	public function __construct($files, $deleteEmptyDirs = true)
+	/**
+	 * @param string|array|FileSet $target Набор файлов для удаления
+	 * @param bool $deleteEmptyDirs
+	 */
+	public function __construct($target, $deleteEmptyDirs = true)
 	{
 		echo ">> Start delete task\n";
 		clearstatcache();
-		$files = (array)$files;
+
+		if ($target instanceof FileSet)
+		{
+			$target = $target->getFiles(true);
+		}
+
 		$fs = new Filesystem();
-		$fs->remove($files);
+		$fs->remove($target);
 	}
 
-	public function run()
-	{
-		// TODO: Implement run() method.
-	}
 }
 

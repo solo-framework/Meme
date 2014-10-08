@@ -21,9 +21,14 @@ class Project
 
 	protected $startTask;
 
-	public function __construct($name, $startTask)
+	public function __construct($name)
 	{
 		$this->name = $name;
+
+	}
+
+	public function setStartTask($startTask)
+	{
 		$this->startTask = $startTask;
 	}
 
@@ -34,9 +39,13 @@ class Project
 
 	public function run($name)
 	{
-		echo "\n------------ Start Meme project '{$this->name}' ------------\n";
+		$start = $start = microtime(true);
+
+		Console::info("------------ Start Meme project '{$this->name}' ------------");
 		$this->runRecursive($this->getTargetByName($name));
-		echo "\n------------ Finish Meme project '{$this->name}' ------------\n";
+		$time = round(microtime(true) - $start, 3);
+
+		Console::info("------------ Meme has finished the project '{$this->name}', it took {$time} sec. ------------\n");
 	}
 
 	protected function runRecursive(Target $target)
@@ -47,6 +56,7 @@ class Project
 			foreach ($deps as $depTarget)
 				$this->runRecursive($this->getTargetByName($depTarget));
 		}
+		Console::debug("> run target '{$target->name}'");
 		$target->run();
 	}
 

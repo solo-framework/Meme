@@ -16,11 +16,18 @@ use Symfony\Component\Finder\Finder;
 class FileSet extends Type
 {
 	/**
+	 * @var DirectoryScanner
+	 */
+	protected $ds;
+
+	/**
 	 * Список файлов, подходящих под условия
 	 *
 	 * @var array
 	 */
 	protected $files = array();
+
+	protected $baseDir = "";
 
 
 	/**
@@ -49,25 +56,41 @@ class FileSet extends Type
 	 */
 	public function __construct($baseDir, $includes = array(), $excludes = array(), $caseSensitive = true, $followSymlinks = false)
 	{
-		$ds = new DirectoryScanner();
-		$ds->SetIncludes($includes);
-		$ds->SetExcludes($excludes);
-		$ds->SetBasedir($baseDir);
-		$ds->SetCaseSensitive($caseSensitive);
-		$ds->setExpandSymbolicLinks($followSymlinks);
-		$ds->Scan();
+		$this->baseDir = $baseDir;
 
-		$this->files = $ds->GetIncludedFiles();
+		$this->ds = new DirectoryScanner();
+		$this->ds->SetIncludes($includes);
+		$this->ds->SetExcludes($excludes);
+		$this->ds->SetBasedir($baseDir);
+		$this->ds->SetCaseSensitive($caseSensitive);
+		$this->ds->setExpandSymbolicLinks($followSymlinks);
+		$this->ds->Scan();
+
+
 	}
 
 	/**
 	 * Возвращает список найденных файлов
 	 *
+	 * @param bool $pathPrefix Добавлять к имени файла базовый каталог
+	 *
 	 * @return string[]
 	 */
-	public function getFiles()
+	public function getFiles($pathPrefix = false)
 	{
-		return $this->files;
+		$files = $this->ds->GetIncludedFiles();
+		if (!$pathPrefix)
+		{
+			return $files;
+		}
+		else
+		{
+			$res = array();
+			foreach ($files as $file)
+				$res[] = $this->baseDir . DIRECTORY_SEPARATOR . $file;
+
+			return $res;
+		}
 	}
 
 //	public function __construct($baseDir,

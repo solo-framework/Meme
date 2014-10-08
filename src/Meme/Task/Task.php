@@ -12,6 +12,6 @@ namespace Meme\Task;
 
 abstract class Task
 {
-	public abstract function run();
+	//public abstract function run();
 }
 

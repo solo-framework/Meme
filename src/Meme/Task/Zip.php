@@ -12,17 +12,19 @@
 namespace Meme\Task;
 
 
+use Meme\Console;
 use ZipArchive;
 
 class Zip extends Task
 {
 	/**
+	 * @param $baseDir
 	 * @param string $fileName Имя файла архива
 	 * @param array $files Список путей файлов для записи в архив
 	 */
 	public function __construct($baseDir, $fileName, $files)
 	{
-		echo ">> Start Zip task\n";
+		Console::info(">> Start Zip task");
 		$files = (array)$files;
 
 		$zip = new \ZipArchive();
@@ -41,14 +43,9 @@ class Zip extends Task
 		}
 		else
 		{
-			echo "ZIP error\n";
+			Console::error("ZIP error");
 		}
 
 		$zip->close();
-	}
-
-	public function run()
-	{
-		// TODO: Implement run() method.
 	}
 }

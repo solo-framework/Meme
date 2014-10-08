@@ -12,7 +12,8 @@
     "require": {
 
 	    "symfony/yaml": "2.*",
-	    "symfony/console": "2.*"
+	    "symfony/console": "2.*",
+	    "symfony/filesystem": "2.*"
     },
 	"autoload": {
 		"psr-0": {

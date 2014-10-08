@@ -1,20 +1,28 @@
 <?php
 
-use Meme\Task\Zip;
+use Meme\Console;
+use Meme\Project;
+
 use Meme\Types;
 use Meme\Target;
 
-$project = new \Meme\Project("test project", "start");
-
 /**
- *
- * Начало
- *
+ * @var $project Project
  */
-$startTarget = new Target("start", function(){
-	echo "Hello from start!\n";
 
-}, "middle");
+$project->setStartTask("start");
+
+//
+// Write your targets and task below
+//
+
+
+$startTarget = new Target("start", function(){
+
+	Console::info("Hello, world!");
+
+} /*, add dependencies here*/);
+
 
 /**
  * Таск бла бла бла
@@ -22,92 +30,23 @@ $startTarget = new Target("start", function(){
 $mT = new Target("middle", function(){
 
 	$fs = new Types\FileSet(
-		"../../testcurl"
-		//, array("**/*curl*.exe", "*.cs")
-
+		"../test/",
+		array("**/*.phar", "**/*.zip", "*.json")
 	);
 
+	$res = $fs->getFiles(true);
 
-	$res = $fs->getFiles();
+//	new \Meme\Task\Delete($fs);
+	print_r($res);
 
-	new Zip("../../testcurl" , "testcurl1.zip", $res);
-	//print_r($res);
-
-	//$etask = new \Meme\Task\EchoTask("messsage!!!");
-	//$etask->run();
-
-
-//	$fs = new Types\FileSet(
-//		"..",
-//		array(),// include
-//		array("vendor", ".idea", "Command"),// exclude
-//		array("*.php"),
-//		array("*Task.php", "*.phar")
-//	);
-//
-//	$res = $fs->getFiles();
-//	print_r($res);
-//	new ZipTask("../yes.zip", $res);
-
-//	$curlDir = "../../testcurl";
-//
-//	$fs = new Types\FileSet($curlDir, array("build/*.exe"), array(), array(), array());
-//	$res = $fs->getFiles();
-//	print_r($res);
-//
-//	new ZipTask("../../testcurl.zip", $res);
-//	new \Meme\Task\Delete($curlDir);
-
-
-	//print_r($res);
-
-
-
-	$fs = new \Symfony\Component\Finder\Finder();
-	$fs->ignoreDotFiles(false);
-	$fs
-//		->directories()
-		->in("../../testcurl")
-//		->path("Exception")
-//		->path("Tests")
-//		->notPath("Process/Exception")
-//		->notPath("vendor/symfony")
-//		->name("*ions.yml")
-		//->notPath("/")
-	;
-
-//		->notName(".gitignore")
-//		->notName(".test")
-//		->notName("*.md")
-//
-//		->exclude(array("vendor", ".idea"));
-
-//	foreach ($fs as $item)
-//		print_r($item->getPathname() . "\n");
-
-
-//	$fs = new Types\FileSet(".", "vendor,var/cache,var/compile",
-//		array("vendor", "var/cache", "var/compile")
-//	);
-
-
-
-	//print_r($fs->getFiles());
-
-	//$task = new \Custom\TestTask();
-	//$task->run();
-
+	//echo "\033[31mred\033[37m\r\n";
 
 }, "end");
 
 $end = new Target("end", function(){
-	echo "Hello from end!\n";
+	Console::info("Hello from end!");
 });
-
 
 $project->addTarget($startTarget);
 $project->addTarget($mT);
 $project->addTarget($end);
-$project->run("start");
-
-//$task = new \CustomTask\TestTask();

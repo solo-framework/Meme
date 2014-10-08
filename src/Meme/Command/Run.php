@@ -10,6 +10,7 @@
 
 namespace Meme\Command;
 
+use Meme\Project;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -44,7 +45,10 @@ class Run extends BaseCommand
 
 		$configDir = getcwd() . "/.meme";
 		$env = $configDir . "/{$env}.php";
+
+		$project = new Project("name from config", "start");
 		include $env;
+		$project->run("start");
 	}
 }
 
