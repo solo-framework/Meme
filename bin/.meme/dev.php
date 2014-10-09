@@ -7,8 +7,13 @@ use Meme\Task\Chmod;
 use Meme\Task\Copy;
 use Meme\Task\Mkdir;
 use Meme\Task\Replace;
+use Meme\Task\SSH\ScpSend;
+use Meme\Task\SSH\Ssh;
+use Meme\Task\SSH\SshCommand;
+use Meme\Task\SSH\SshConnection;
 use Meme\Types;
 use Meme\Target;
+use Meme\Types\FileSet;
 
 /**
  * @var $project Project
@@ -25,16 +30,21 @@ $startTarget = new Target("start", function(){
 
 	Console::info("Hello, world!");
 
-}, "middle"/*, add dependencies here*/);
+}, "middle");
 
+$ssh = new SshConnection("ubuntu", "dev", "root");
 
 /**
  * Таск бла бла бла
  */
-$mT = new Target("middle", function(){
+$mT = new Target("middle", function() use ($ssh){
 
-	$files = array("./lala/tee", "./ddd");
-	new Mkdir($files, 0755);
+	$fs = new FileSet("../../testcurl/", array("**/*.cs"));
+	new ScpSend($fs, $ssh, "tmp", 0777);
+
+//	new SshCommand($ssh, "ls -l", true);
+//	new SshCommand($ssh, "uname -a", true);
+//	new SshCommand($ssh, "cd / && ls -l", true);
 
 }, "end");
 

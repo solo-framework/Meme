@@ -87,10 +87,16 @@ class FileSet extends Type
 		{
 			$res = array();
 			foreach ($files as $file)
-				$res[] = $this->baseDir . DIRECTORY_SEPARATOR . $file;
+				$res[] = rtrim($this->baseDir, "\/") . DIRECTORY_SEPARATOR . $file;
 
 			return $res;
 		}
+	}
+
+
+	public function getBaseDir()
+	{
+		return $this->baseDir;
 	}
 
 //	public function __construct($baseDir,
