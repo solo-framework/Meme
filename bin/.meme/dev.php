@@ -39,10 +39,12 @@ $ssh = new SshConnection("ubuntu", "dev", "root");
  */
 $mT = new Target("middle", function() use ($ssh){
 
-//	$fs = new FileSet("../../testcurl/", array("**/*.cs"));
-	new ScpSend($ssh, "session/lflf/", "../README.md", 0777);
+	new \Meme\Task\Move("../test/", "./ddd/");
 
-//	new SshCommand($ssh, "cd tmp && ls -l", true);
+//	$fs = new FileSet("../../testcurl/", array("**/*.cs"));
+//	new ScpSend($ssh, "session/lflf/", "../README.md", 0777);
+
+//	new SshCommand($ssh, "ls -l", true);
 //	new SshCommand($ssh, "uname -a", true);
 //	new SshCommand($ssh, "cd / && ls -l", true);
 
