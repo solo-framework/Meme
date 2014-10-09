@@ -24,26 +24,23 @@ class Run extends BaseCommand
 {
 	protected function configure()
 	{
+		parent::configure();
 		$this
 				->setName('run')
 				->setDescription('Run Meme project')
-//				->addArgument(
-//						'name',
-//						InputArgument::OPTIONAL,
-//						'Who do you want to greet?'
-//				)
 				->addOption(
 						'env',
 						"e",
 						InputOption::VALUE_REQUIRED,
 						'Name of environment to run'
 				)
+				->addOption("debug", "d", InputOption::VALUE_OPTIONAL, "Run in debug mode")
 		;
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
-
+		$this->isDebug = $input->hasParameterOption(array("-d", "--debug"));
 		$envName = $input->getOption("env");
 		if (!$envName)
 			throw new \Exception("You should set an environment name");
@@ -82,7 +79,12 @@ class Run extends BaseCommand
 		catch (\Exception $e)
 		{
 			Console::error("Error: " . $e->getMessage());
-			//print_r($e->getTraceAsString());
+
+			if ($this->isDebug)
+			{
+				Console::error("\n---------------Error----------------");
+				Console::error($e->getTraceAsString());
+			}
 		}
 	}
 }

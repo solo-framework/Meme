@@ -32,14 +32,14 @@ $startTarget = new Target("start", function(){
 
 }, "middle");
 
-$ssh = new SshConnection("ubuntu", "dev", "root");
+//$ssh = new SshConnection("ubuntu", "dev", "root");
 
 /**
  * Таск бла бла бла
  */
-$mT = new Target("middle", function() use ($ssh){
+$mT = new Target("middle", function() {
 
-	new \Meme\Task\Move("../test/", "./ddd/");
+	//new \Meme\Task\Move("../test/", "./ddd/");
 
 //	$fs = new FileSet("../../testcurl/", array("**/*.cs"));
 //	new ScpSend($ssh, "session/lflf/", "../README.md", 0777);

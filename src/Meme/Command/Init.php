@@ -30,12 +30,6 @@ class Init extends BaseCommand
 						InputArgument::REQUIRED,
 						'Name of environment. For example: "meme init dev" will create a "dev" environment'
 				)
-//				->addOption(
-//						'yell',
-//						null,
-//						InputOption::VALUE_NONE,
-//						'If set, the task will yell in uppercase letters'
-//				)
 		;
 	}
 
