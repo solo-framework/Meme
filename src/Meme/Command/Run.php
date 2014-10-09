@@ -82,6 +82,7 @@ class Run extends BaseCommand
 		catch (\Exception $e)
 		{
 			Console::error("Error: " . $e->getMessage());
+			//print_r($e->getTraceAsString());
 		}
 	}
 }
