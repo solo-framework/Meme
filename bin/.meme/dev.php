@@ -5,6 +5,7 @@ use Meme\Project;
 
 use Meme\Task\Chmod;
 use Meme\Task\Copy;
+use Meme\Task\Mkdir;
 use Meme\Task\Replace;
 use Meme\Types;
 use Meme\Target;
@@ -24,7 +25,7 @@ $startTarget = new Target("start", function(){
 
 	Console::info("Hello, world!");
 
-} , "middle"/*, add dependencies here*/);
+}, "middle"/*, add dependencies here*/);
 
 
 /**
@@ -32,15 +33,8 @@ $startTarget = new Target("start", function(){
  */
 $mT = new Target("middle", function(){
 
-	$fs = new Types\FileSet(
-		"..",
-		array("*.txt")
-	);
-
-	$res = $fs->getFiles(true);
-//	print_r($res);
-
-//	new Copy($res, "./1/2/3");
+	$files = array("./lala/tee", "./ddd");
+	new Mkdir($files, 0755);
 
 }, "end");
 

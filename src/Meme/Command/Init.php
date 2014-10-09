@@ -56,13 +56,61 @@ class Init extends BaseCommand
 			mkdir($this->configDir . '/tasks');
 			touch($this->configDir . '/tasks/.gitignore');
 
-			$yml = $this->configDir . "/{$env}.yml";
+			$yml = $this->configDir . "/config.yml";
+			$envFile = $this->configDir . "/{$env}.php";
 			touch($yml);
-			touch($this->configDir . "/{$env}.php");
-//			if (is_file($yml))
-//				$o->writeln("<error>Environment '{$env}' already exists</error>");
-//			else
+			touch($envFile);
 
+$cnfDummy = <<<EOT
+# конфигурационный файл Meme-проекта
+{$env}:
+
+    name: environment description here
+
+    # например, подключение к БД
+    mongo:
+        username: root
+        password: password
+        isDebug: true
+        dsn: mysql:host=hostname;dbname=dbname
+EOT;
+
+		file_put_contents($yml, $cnfDummy);
+
+
+$envDummy = <<<EOT
+<?php
+
+use Meme\Console;
+use Meme\Project;
+use Meme\Types;
+use Meme\Target;
+
+/**
+ * @var \$project Project
+ */
+
+\$project->setStartTask("start");
+
+//
+// Write your targets and task below
+//
+
+// for example
+\$startTarget = new Target("start", function(){
+
+	Console::info("Hello, world!");
+
+}/*, add dependencies here*/);
+
+
+// don't forget to add your targets to the project
+\$project->addTarget(\$startTarget);
+
+
+EOT;
+
+			file_put_contents($envFile, $envDummy);
 		}
 
 		$o->writeln("<info>Project has been successfully created</info>");
