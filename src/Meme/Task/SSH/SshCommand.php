@@ -2,9 +2,11 @@
 /**
  * Выполнение команды на удаленном сервере
  *
- * 	$ssh = new SshConnection("host", "user", "password");
+ * 	$ssh = new SshConnection("host", 22);
+ *  $ssh->authPublicKey("user", "./run.pub", "./run.priv");
  *	new SshCommand($ssh, "ls -l", true);
  *	new SshCommand($ssh, "uname -a", true);
+ *  new SshCommand($ssh, SshCommand::sudoCommand("mkdir /newdir")); // от имени суперпользователя
  *
  *  $res = new SshCommand($ssh, "cd / && ls -l");
  *  print $res;
@@ -71,6 +73,20 @@ class SshCommand extends Task
 		{
 			Console::error($e->getMessage());
 		}
+	}
+
+	/**
+	 * Генерирует команду, которую можно выполнить
+	 * в контексте суперпользователя
+	 *
+	 * @param string $cmd Команда
+	 * @param string $password Пароль суперпользователя
+	 *
+	 * @return string
+	 */
+	public static function sudoCommand($cmd, $password)
+	{
+		return "echo '{$password}' | sudo -S " . $cmd;
 	}
 }
 
