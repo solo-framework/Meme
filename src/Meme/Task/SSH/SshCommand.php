@@ -53,16 +53,19 @@ class SshCommand extends Task
 				$result = stream_get_contents($stderrStream);
 			}
 
-
-			if ($display)
-				print($result);
-			else
-				return $result;
-
 			fclose($stream);
 			if (isset($stderrStream))
 				fclose($stderrStream);
 
+			if ($display)
+			{
+				print $result;
+				return $result;
+			}
+			else
+			{
+				return $result;
+			}
 		}
 		catch (\Exception $e)
 		{

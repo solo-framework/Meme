@@ -32,19 +32,23 @@ $startTarget = new Target("start", function(){
 
 }, "middle");
 
-//$ssh = new SshConnection("ubuntu", "dev", "root");
+$ssh = new SshConnection("runtime.pro", 10022);
+$ssh->authPublicKey("afi", "./run.pub", "./run.priv");
 
 /**
  * Таск бла бла бла
  */
-$mT = new Target("middle", function() {
+$mT = new Target("middle", function() use ($ssh){
 
 	//new \Meme\Task\Move("../test/", "./ddd/");
 
 //	$fs = new FileSet("../../testcurl/", array("**/*.cs"));
 //	new ScpSend($ssh, "session/lflf/", "../README.md", 0777);
 
-//	new SshCommand($ssh, "ls -l", true);
+	$cmd = "mkdir -p /test_folder";
+	$cmd = "echo 'kotenok' | sudo -S " . $cmd;
+
+	new SshCommand($ssh, $cmd, true);
 //	new SshCommand($ssh, "uname -a", true);
 //	new SshCommand($ssh, "cd / && ls -l", true);
 
