@@ -57,7 +57,7 @@ class Project
 			foreach ($deps as $depTarget)
 				$this->runRecursive($this->getTargetByName($depTarget));
 		}
-		Output::comment("> run target '{$target->name}'");
+		Output::comment("run target > '{$target->name}':\n");
 		$target->run();
 	}
 
