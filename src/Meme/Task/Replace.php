@@ -1,6 +1,7 @@
 <?php
 /**
- *
+ * Поиск и замена подстроки по регулярному выражению.
+ * Подробности см. http://php.net/manual/ru/function.preg-replace.php
  *
  * PHP version 5
  *
@@ -11,14 +12,19 @@
 
 namespace Meme\Task;
 
-use Meme\Console;
+use Meme\Output;
 use Meme\Types\FileSet;
 
 class Replace extends Task
 {
+	/**
+	 * @param $target
+	 * @param $regexp
+	 * @param $replacement
+	 */
 	public function __construct($target, $regexp, $replacement)
 	{
-		Console::info(">> Start replace task");
+		Output::info(">> Start replace task");
 		clearstatcache();
 
 		//$pattern = "/{$pattern}/";
@@ -42,7 +48,7 @@ class Replace extends Task
 			}
 			else
 			{
-				Console::error("Can't do replacement in file {$file}");
+				Output::error("Can't do replacement in file {$file}");
 			}
 		}
 	}

@@ -10,10 +10,10 @@
 
 namespace Meme;
 
-class Console
+class Output
 {
 	/**
-	 * List of Colors and they Terminal/Console representation.
+	 * List of Colors and they Output representation.
 	 * @var array
 	 */
 	private static $foregroundColors = array(
@@ -36,8 +36,10 @@ class Console
 
 	);
 
+	protected static $output = null;
+
 	/**
-	 * Parses a Text to represent Colors in the Terminal/Console.
+	 * Parses a Text to represent Colors in the Terminal/Output.
 	 *
 	 * @param string $string
 	 * @param Config $config
@@ -46,14 +48,6 @@ class Console
 	 */
 	public static function color($string)
 	{
-		//$disabled = $config->getParameter('no-color', !$config->general('colors', true));
-
-//		if ($disabled)
-//		{
-//			$string = strip_tags($string);
-//			return $string;
-//		}
-
 		foreach (self::$foregroundColors as $key => $code)
 		{
 			$replaceFrom = array(
@@ -74,26 +68,27 @@ class Console
 
 	public static function error($message)
 	{
-		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
-			echo "{$message}\n";
-		else
-			echo self::color("<red>{$message}</red>\n");
+		self::$output->writeln("<error>{$message}</error>");
 	}
 
 	public static function info($message)
 	{
-		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
-			echo "{$message}\n";
-		else
-			echo self::color("<green>{$message}</green>\n");
+		self::$output->writeln("<info>{$message}</info>");
 	}
 
-	public static function debug($message)
+	public static function warning($message)
 	{
-		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN')
-			echo "{$message}\n";
-		else
-			echo self::color("<light_gray>{$message}</light_gray>\n");
+		self::$output->writeln("<warning>{$message}</warning>");
+	}
+
+	public static function comment($message)
+	{
+		self::$output->writeln("<comment>{$message}</comment>");
+	}
+
+	public static function setOutputInterface($output)
+	{
+		self::$output = $output;
 	}
 
 }

@@ -11,7 +11,7 @@
 
 namespace Meme\Task;
 
-use Meme\Console;
+use Meme\Output;
 use Meme\Types\FileSet;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -19,7 +19,7 @@ class Copy extends Task
 {
 	public function __construct($target, $destination, $overwrite = true)
 	{
-		Console::info(">> Start Copy task");
+		Output::info(">> Start Copy task");
 
 		try
 		{
@@ -37,11 +37,11 @@ class Copy extends Task
 			}
 
 			$cnt = count($target);
-			Console::info(">> {$cnt} was copied into directory '{$toDir}'");
+			Output::info(">> {$cnt} was copied into directory '{$toDir}'");
 		}
 		catch (\Exception $e)
 		{
-			Console::error($e->getMessage());
+			Output::error($e->getMessage());
 		}
 
 	}

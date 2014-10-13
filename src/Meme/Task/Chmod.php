@@ -12,31 +12,38 @@
 namespace Meme\Task;
 
 
-use Meme\Console;
+use Meme\Output;
 use Meme\Types\FileSet;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Chmod extends Task
 {
-	public function __construct($target, $mode, $umask = 0000, $recursive = false)
+	public function __construct($target, $mode, $recursive = false, $umask = 0000)
 	{
-		Console::info(">> Start Chmod task");
-		clearstatcache();
+		Output::info(">> Start Chmod task");
 
 		try
 		{
-
 			if ($target instanceof FileSet)
 				$target = $target->getFiles(true);
 			else
 				$target = (array)$target;
 
 			$fs = new Filesystem();
+			array_map(function ($item) use($mode, $recursive){
+				$r = "";
+				if ($recursive)
+					$r = "recursive";
+
+				Output::comment("Cmod {$mode} for '{$item}' {$r}" );
+			}, $target);
+
+
 			$fs->chmod($target, $mode, $umask, $recursive);
 		}
 		catch (\Exception $e)
 		{
-			Console::error($e->getMessage());
+			Output::error($e->getMessage());
 		}
 	}
 }

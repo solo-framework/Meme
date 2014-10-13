@@ -21,7 +21,7 @@
 
 namespace Meme\Task\SSH;
 
-use Meme\Console;
+use Meme\Output;
 use Meme\Task\Task;
 
 class SshCommand extends Task
@@ -39,7 +39,7 @@ class SshCommand extends Task
 	{
 		try
 		{
-			Console::debug(">>>> executing command: {$command}");
+			Output::comment(">>>> executing command: {$command}");
 			$connection = $conn->getConnection();
 			$stream = ssh2_exec($connection, $command);
 			if (!$stream)
@@ -71,7 +71,7 @@ class SshCommand extends Task
 		}
 		catch (\Exception $e)
 		{
-			Console::error($e->getMessage());
+			Output::error($e->getMessage());
 		}
 	}
 

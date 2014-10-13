@@ -13,7 +13,7 @@
 
 namespace Meme\Task\SSH;
 
-use Meme\Console;
+use Meme\Output;
 use Meme\Task\Task;
 
 class ScpSend extends Task
@@ -22,7 +22,7 @@ class ScpSend extends Task
 
 	public function __construct(SshConnection $ssh, $toDir, $file, $mode = null, $autocreate = true)
 	{
-		Console::info(">> Start ScpSend task");
+		Output::info(">> Start ScpSend task");
 
 		$this->connection = $ssh->getConnection();
 
@@ -35,7 +35,7 @@ class ScpSend extends Task
 		$file = ltrim($file, ".\/");
 		$remoteEndpoint = $path . strtr($file, '\\', '/');
 
-		Console::debug("\t Send from '{$localEndpoint}' to '{$remoteEndpoint}'");
+		Output::comment("\t Send from '{$localEndpoint}' to '{$remoteEndpoint}'");
 
 		$sftp = null;
 		if ($autocreate)

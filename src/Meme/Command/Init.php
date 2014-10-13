@@ -75,7 +75,7 @@ EOT;
 $envDummy = <<<EOT
 <?php
 
-use Meme\Console;
+use Meme\Output;
 use Meme\Project;
 use Meme\Types;
 use Meme\Target;
@@ -93,7 +93,7 @@ use Meme\Target;
 // for example
 \$startTarget = new Target("start", function(){
 
-	Console::info("Hello, world!");
+	Output::info("Hello, world!");
 
 }/*, add dependencies here*/);
 

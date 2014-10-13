@@ -12,7 +12,7 @@ namespace Meme\Command;
 
 use Herrera\Annotations\Exception\Exception;
 use Meme\Config;
-use Meme\Console;
+use Meme\Output;
 use Meme\Project;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -49,13 +49,13 @@ class Run extends BaseCommand
 		$env = $configDir . "/{$envName}.php";
 		if (!is_file($env))
 		{
-			Console::error("You should create build file {$env}");
+			Output::error("You should create build file {$env}");
 			exit();
 		}
 		$yml = $configDir . "/config.yml";
 
 
-		Console::info("
+		Output::info("
 
 ========================================
    ____ __    ___   ____ __    ___
@@ -78,12 +78,12 @@ class Run extends BaseCommand
 		}
 		catch (\Exception $e)
 		{
-			Console::error("Error: " . $e->getMessage());
+			Output::error("Error: " . $e->getMessage());
 
 			if ($this->isDebug)
 			{
-				Console::error("\n---------------Error----------------");
-				Console::error($e->getTraceAsString());
+				Output::error("\n---------------Error----------------");
+				Output::error($e->getTraceAsString());
 			}
 		}
 	}

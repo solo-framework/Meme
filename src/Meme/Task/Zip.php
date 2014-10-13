@@ -12,7 +12,7 @@
 namespace Meme\Task;
 
 
-use Meme\Console;
+use Meme\Output;
 use ZipArchive;
 
 class Zip extends Task
@@ -24,7 +24,7 @@ class Zip extends Task
 	 */
 	public function __construct($baseDir, $fileName, $files)
 	{
-		Console::info(">> Start Zip task");
+		Output::info(">> Start Zip task");
 		$files = (array)$files;
 
 		$zip = new \ZipArchive();
@@ -43,7 +43,7 @@ class Zip extends Task
 		}
 		else
 		{
-			Console::error("ZIP error");
+			Output::error("ZIP error");
 		}
 
 		$zip->close();

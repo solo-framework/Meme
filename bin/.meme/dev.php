@@ -1,6 +1,6 @@
 <?php
 
-use Meme\Console;
+use Meme\Output;
 use Meme\Project;
 
 use Meme\Task\Chmod;
@@ -28,7 +28,7 @@ $project->setStartTask("start");
 
 $startTarget = new Target("start", function(){
 
-	Console::info("Hello, world!");
+	Output::info("Hello, world!");
 
 }, "middle");
 
@@ -40,22 +40,30 @@ $ssh->authPublicKey("afi", "./run.pub", "./run.priv");
  */
 $mT = new Target("middle", function() use ($ssh){
 
+//	$fs = new \Symfony\Component\Filesystem\Filesystem();
+
+	$cmd = new \Meme\Task\Command("./mongo_migrate", "./44");
+//	file_put_contents("local.php", file_get_contents("local.php.dist"));
+
+	//$cmd = new \Meme\Task\Command("git status");
+	//print_r($cmd->getResult());
+
 	//new \Meme\Task\Move("../test/", "./ddd/");
 
 //	$fs = new FileSet("../../testcurl/", array("**/*.cs"));
 //	new ScpSend($ssh, "session/lflf/", "../README.md", 0777);
 
-	$cmd = "mkdir -p /test_folder";
-	$cmd = "echo 'kotenok' | sudo -S " . $cmd;
+	//$cmd = "mkdir -p /test_folder";
+	//$cmd = "echo 'kotenok' | sudo -S " . $cmd;
 
-	new SshCommand($ssh, $cmd, true);
-//	new SshCommand($ssh, "uname -a", true);
+	//new SshCommand($ssh, $cmd, true);
+	//new SshCommand($ssh, "uname -a", true);
 //	new SshCommand($ssh, "cd / && ls -l", true);
 
 }, "end");
 
 $end = new Target("end", function(){
-	Console::info("Hello from end!");
+	Output::info("Hello from end!");
 });
 
 $project->addTarget($startTarget);

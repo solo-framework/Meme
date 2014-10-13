@@ -10,6 +10,7 @@
 
 namespace Meme\Command;
 
+use Meme\Output;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,6 +27,8 @@ class BaseCommand extends Command
 	protected function initialize(InputInterface $input, OutputInterface $output)
 	{
 		$this->configDir = getcwd() . '/.meme';
+
+		Output::setOutputInterface($output);
 
 		if (!$this->checkProject)
 		{

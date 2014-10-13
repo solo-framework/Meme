@@ -4,6 +4,18 @@ dev:
 
     name: citycard development environment
 
+    settings:
+        assets-debug: true
+        assets-ttl: 0
+
+        mongo-server: mongodb://root:password@localhost
+        mongo-dbname: citycard
+
+        moneta-username: finance@citycard.ru
+        moneta-password: moneta147
+        moneta-wsdl: https://moneta.ru/services.wsdl
+        moneta-version: VERSION_2
+
     # подключение к БД
     mongo:
         username: root

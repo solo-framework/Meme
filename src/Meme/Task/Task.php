@@ -10,8 +10,10 @@
 
 namespace Meme\Task;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 abstract class Task
 {
-	//public abstract function run();
+
 }
 

@@ -39,13 +39,14 @@ class Project
 
 	public function run($name)
 	{
+		clearstatcache();
 		$start = microtime(true);
 
-		Console::info("Start Meme project '{$this->name}'\n");
+		Output::info("Start Meme project '{$this->name}'\n");
 		$this->runRecursive($this->getTargetByName($name));
 		$time = round(microtime(true) - $start, 3);
 
-		Console::info("\nMeme has finished the project '{$this->name}', it took {$time} sec. \n");
+		Output::info("\nMeme has finished building the project '{$this->name}', it took {$time} sec. \n");
 	}
 
 	protected function runRecursive(Target $target)
@@ -56,7 +57,7 @@ class Project
 			foreach ($deps as $depTarget)
 				$this->runRecursive($this->getTargetByName($depTarget));
 		}
-		Console::debug("> run target '{$target->name}'");
+		Output::comment("> run target '{$target->name}'");
 		$target->run();
 	}
 
