@@ -23,9 +23,7 @@ class Delete extends Task
 	 */
 	public function __construct($target, $deleteEmptyDirs = true)
 	{
-		//echo ">> Start delete task\n";
-		Output::info(">> Start delete task");
-		clearstatcache();
+		Output::taskHeader("Start delete task");
 
 		if ($target instanceof FileSet)
 		{

@@ -18,7 +18,7 @@ class Mkdir extends Task
 {
 	public function __construct($target, $mode)
 	{
-		Output::info(">> Start Mkdir task");
+		Output::taskHeader("Start Mkdir task");
 
 		if ($target instanceof FileSet)
 		{
@@ -33,11 +33,11 @@ class Mkdir extends Task
 		$fs->mkdir($target, $mode);
 
 		array_map(function($el){
-			Output::info("\tcreated dir '{$el}'");
+			Output::info("created dir '{$el}'");
 		}, $target);
 
 		$cnt = count($target);
-		Output::info("\t{$cnt} dirs have been created");
+		Output::info("{$cnt} dirs created");
 	}
 }
 

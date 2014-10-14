@@ -56,8 +56,8 @@ class FileSet extends Type
 	 */
 	public function __construct($baseDir, $includes = array(), $excludes = array(), $caseSensitive = true, $followSymlinks = false)
 	{
-//		if ($baseDir == ".")
-//			$baseDir = $baseDir . DIRECTORY_SEPARATOR;
+		if ($baseDir == ".")
+			$baseDir = $baseDir . DIRECTORY_SEPARATOR;
 
 		$this->ds = new DirectoryScanner();
 		$this->ds->setBasedir($baseDir);

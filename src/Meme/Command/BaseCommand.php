@@ -12,6 +12,8 @@ namespace Meme\Command;
 
 use Meme\Output;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,7 +30,23 @@ class BaseCommand extends Command
 	{
 		$this->configDir = getcwd() . '/.meme';
 
+		$style = new OutputFormatterStyle('cyan', null, array("underscore"));
+		$output->getFormatter()->setStyle('targetHeader', $style);
+
+		$style = new OutputFormatterStyle('yellow');
+		$output->getFormatter()->setStyle('taskHeader', $style);
+
+		$style = new OutputFormatterStyle('white');
+		$output->getFormatter()->setStyle('mainHeader', $style);
+
+
+
+//		$formatter = new OutputFormatter(true);
+//		$formatter->setStyle("header", new OutputFormatterStyle('blue'));
+//
+//		$output->setFormatter($formatter);
 		Output::setOutputInterface($output);
+
 
 		if (!$this->checkProject)
 		{

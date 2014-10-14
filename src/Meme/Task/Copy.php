@@ -19,7 +19,7 @@ class Copy extends Task
 {
 	public function __construct($target, $destination, $overwrite = true)
 	{
-		Output::info(">> Start Copy task");
+		Output::taskHeader("Start Copy task");
 
 		try
 		{
@@ -45,7 +45,7 @@ class Copy extends Task
 			}
 
 			$cnt = count($target);
-			Output::info(">> {$cnt} items were copied into directory '{$toDir}'");
+			Output::info("{$cnt} items were copied into directory '{$toDir}'");
 		}
 		catch (\Exception $e)
 		{

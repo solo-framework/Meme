@@ -24,45 +24,30 @@ class Zip extends Task
 	 * @param string $fileName Имя файла архива
 	 * @param array $files Список путей файлов для записи в архив
 	 */
-	public function __construct(/* $baseDir, */ $fileName, FileSet $fileset)
+	public function __construct($zipName, FileSet $fileset)
 	{
-		Output::info(">> Start Zip task");
-
-//		$fs = new Filesystem();
-//		if ($files instanceof FileSet)
-			$files = $fileset->getFiles(true);
-//		else
-//			$files = (array)$files;
-
-		//$files = (array)$files;
+		Output::taskHeader("Start Zip task");
+		$files = $fileset->getFiles(true);
 
 		$zip = new \ZipArchive();
-		$res = $zip->open($fileName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
+		$res = $zip->open($zipName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
 
 		if ($res === true)
 		{
 			foreach ($files as $file)
 			{
-				//$fileName = $baseDir . "/" . trim($file);
-				// TODO не копировать в архив базовый каталог
-				// TODO: возможно в конструктор передавать не файл, а FileSet?
-				// TODO: чтобы можно было определить базовый каталог
-				//$fileName = $baseDir . "/" . trim($file);
 				$fileName = trim($file);
 				if (is_dir($file))
 				{
-					$zip->addEmptyDir($file);
-					print_r("dir: {$file}\n");
+					$zip->addEmptyDir(str_replace($fileset->getBaseDir(), "", $fileName));
 				}
-
 				else
 				{
 					$zip->addFile($fileName, str_replace($fileset->getBaseDir(), "", $fileName));//$file);
 				}
-//				print_r(str_replace($fileset->getBaseDir(), "", $fileName) . "\n");
-//				print_r($fileName . "\n");
-//				print_r($fileName . "\n");
 			}
+
+			Output::comment("Created zip file {$zipName}");
 		}
 		else
 		{

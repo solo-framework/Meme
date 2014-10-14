@@ -10,6 +10,8 @@
 
 namespace Meme;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 class Output
 {
 	/**
@@ -36,6 +38,9 @@ class Output
 
 	);
 
+	/**
+	 * @var OutputInterface
+	 */
 	protected static $output = null;
 
 	/**
@@ -68,25 +73,35 @@ class Output
 
 	public static function error($message)
 	{
-		self::$output->writeln("<error>{$message}</error>");
+		self::$output->writeln("\t<error>{$message}</error>");
 	}
 
 	public static function info($message)
 	{
-		self::$output->writeln("<info>{$message}</info>");
+		self::$output->writeln("\t<info>{$message}</info>");
 	}
 
-	public static function warning($message)
+	public static function mainHeader($message)
 	{
-		self::$output->writeln("<warning>{$message}</warning>");
+		self::$output->writeln("<mainHeader>{$message}</mainHeader>");
+	}
+
+	public static function taskHeader($message)
+	{
+		self::$output->writeln("   <taskHeader>>> {$message}</taskHeader>");
+	}
+
+	public static function targetHeader($message)
+	{
+		self::$output->writeln("<targetHeader>{$message}</targetHeader>");
 	}
 
 	public static function comment($message)
 	{
-		self::$output->writeln("<comment>{$message}</comment>");
+		self::$output->writeln("\t<comment>{$message}</comment>");
 	}
 
-	public static function setOutputInterface($output)
+	public static function setOutputInterface(OutputInterface $output)
 	{
 		self::$output = $output;
 	}

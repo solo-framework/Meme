@@ -55,7 +55,7 @@ class Run extends BaseCommand
 		$yml = $configDir . "/config.yml";
 
 
-		Output::info("
+		Output::mainHeader("
 
 ========================================
    ____ __    ___   ____ __    ___

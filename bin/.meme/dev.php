@@ -40,17 +40,21 @@ $startTarget = new Target("start", function(){
  */
 $mT = new Target("middle", function(){
 
-	new \Meme\Task\Delete("copy");
-	new \Meme\Task\Mkdir("copy", 0777);
+	$dir = "../copy";
+	new \Meme\Task\Delete($dir);
+	new \Meme\Task\Delete("lala.zip");
+	new \Meme\Task\Mkdir($dir, 0777);
 
-	$fs = new FileSet("./", array(), array(".meme/"));
+	$fs = new FileSet("./", array(), array(".meme/", "**/.gitignore"));
 
 //	print_r($fs->getFiles(true));
 //	print_r($fs->getFiles(false));
 
-	new Copy($fs, "copy");
+	new Copy($fs, $dir);
 
-	new \Meme\Task\Zip("lala.zip", $fs);
+	$zipName = time();
+	new \Meme\Task\Zip("lala.zip", new FileSet($dir));
+	new \Meme\Task\Zip("{$zipName}.zip", new FileSet(".", array("meme")));
 
 
 //	$fs = new \Symfony\Component\Filesystem\Filesystem();
