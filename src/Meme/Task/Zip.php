@@ -13,6 +13,8 @@ namespace Meme\Task;
 
 
 use Meme\Output;
+use Meme\Types\FileSet;
+use Symfony\Component\Filesystem\Filesystem;
 use ZipArchive;
 
 class Zip extends Task
@@ -22,10 +24,17 @@ class Zip extends Task
 	 * @param string $fileName Имя файла архива
 	 * @param array $files Список путей файлов для записи в архив
 	 */
-	public function __construct($baseDir, $fileName, $files)
+	public function __construct(/* $baseDir, */ $fileName, FileSet $fileset)
 	{
 		Output::info(">> Start Zip task");
-		$files = (array)$files;
+
+//		$fs = new Filesystem();
+//		if ($files instanceof FileSet)
+			$files = $fileset->getFiles(true);
+//		else
+//			$files = (array)$files;
+
+		//$files = (array)$files;
 
 		$zip = new \ZipArchive();
 		$res = $zip->open($fileName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
@@ -34,11 +43,25 @@ class Zip extends Task
 		{
 			foreach ($files as $file)
 			{
-				$fileName = $baseDir . "/" . trim($file);
+				//$fileName = $baseDir . "/" . trim($file);
+				// TODO не копировать в архив базовый каталог
+				// TODO: возможно в конструктор передавать не файл, а FileSet?
+				// TODO: чтобы можно было определить базовый каталог
+				//$fileName = $baseDir . "/" . trim($file);
+				$fileName = trim($file);
 				if (is_dir($file))
+				{
 					$zip->addEmptyDir($file);
+					print_r("dir: {$file}\n");
+				}
+
 				else
-					$zip->addFile($fileName, $file);
+				{
+					$zip->addFile($fileName, str_replace($fileset->getBaseDir(), "", $fileName));//$file);
+				}
+//				print_r(str_replace($fileset->getBaseDir(), "", $fileName) . "\n");
+//				print_r($fileName . "\n");
+//				print_r($fileName . "\n");
 			}
 		}
 		else

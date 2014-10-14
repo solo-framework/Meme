@@ -56,17 +56,17 @@ class FileSet extends Type
 	 */
 	public function __construct($baseDir, $includes = array(), $excludes = array(), $caseSensitive = true, $followSymlinks = false)
 	{
-		$this->baseDir = $baseDir;
+//		if ($baseDir == ".")
+//			$baseDir = $baseDir . DIRECTORY_SEPARATOR;
 
 		$this->ds = new DirectoryScanner();
-		$this->ds->SetIncludes($includes);
-		$this->ds->SetExcludes($excludes);
-		$this->ds->SetBasedir($baseDir);
+		$this->ds->setBasedir($baseDir);
+		$this->ds->SetIncludes((array)$includes);
+		$this->ds->SetExcludes((array)$excludes);
 		$this->ds->SetCaseSensitive($caseSensitive);
 		$this->ds->setExpandSymbolicLinks($followSymlinks);
+		$this->baseDir = $this->ds->getBasedir();//$baseDir;
 		$this->ds->Scan();
-
-
 	}
 
 	/**
@@ -79,6 +79,15 @@ class FileSet extends Type
 	public function getFiles($pathPrefix = false)
 	{
 		$files = $this->ds->GetIncludedFiles();
+		$dirs = $this->ds->getIncludedDirectories();
+
+		$dirs1 = array_filter($dirs, function($el){
+			if ($el !== "" || $el !== ".")
+				return $el;
+		});
+
+		$files = array_merge($files, $dirs1);
+
 		if (!$pathPrefix)
 		{
 			return $files;
@@ -87,13 +96,23 @@ class FileSet extends Type
 		{
 			$res = array();
 			foreach ($files as $file)
-				$res[] = rtrim($this->baseDir, "\/") . DIRECTORY_SEPARATOR . $file;
+			{
+//				if (is_dir($file))
+//					$res[] = rtrim($this->baseDir, "\/") . DIRECTORY_SEPARATOR . $file . DIRECTORY_SEPARATOR;
+//				else
+					$res[] = rtrim($this->baseDir, "\/") . DIRECTORY_SEPARATOR . $file;
+			}
 
 			return $res;
 		}
 	}
 
 
+	/**
+	 * Возвращает базовый каталог нбора файлов
+	 *
+	 * @return string
+	 */
 	public function getBaseDir()
 	{
 		return $this->baseDir;

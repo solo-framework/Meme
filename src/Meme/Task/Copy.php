@@ -32,17 +32,24 @@ class Copy extends Task
 			$toDir = trim($destination) . DIRECTORY_SEPARATOR;
 			foreach ($target as $file)
 			{
-				$res = $toDir . ltrim($file, "\/.");
+				// пустые каталоги копировать не получается, просто создаем
+				if (is_dir($file))
+				{
+//					Output::info(">> Creating directory '{$file}'");
+					$fs->mkdir($toDir . $file);
+					continue;
+				}
+
+				$res = $toDir . ltrim($file, "\/");
 				$fs->copy($file, $res);
 			}
 
 			$cnt = count($target);
-			Output::info(">> {$cnt} was copied into directory '{$toDir}'");
+			Output::info(">> {$cnt} items were copied into directory '{$toDir}'");
 		}
 		catch (\Exception $e)
 		{
 			Output::error($e->getMessage());
 		}
-
 	}
 }

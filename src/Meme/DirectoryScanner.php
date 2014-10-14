@@ -506,8 +506,9 @@ class DirectoryScanner /*implements SelectorScanner*/
 		}
 
 		$newfiles = self::listDir($_rootdir);
+		$cnt = count($newfiles);
 
-		for ($i = 0, $_i = count($newfiles); $i < $_i; $i++)
+		for ($i = 0, $_i = $cnt; $i < $_i; $i++)
 		{
 
 			$file = $_rootdir . DIRECTORY_SEPARATOR . $newfiles[$i];

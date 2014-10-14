@@ -32,17 +32,30 @@ $startTarget = new Target("start", function(){
 
 }, "middle");
 
-$ssh = new SshConnection("runtime.pro", 10022);
-$ssh->authPublicKey("afi", "./run.pub", "./run.priv");
+//$ssh = new SshConnection("runtime.pro", 10022);
+//$ssh->authPublicKey("afi", "./run.pub", "./run.priv");
 
 /**
  * Таск бла бла бла
  */
-$mT = new Target("middle", function() use ($ssh){
+$mT = new Target("middle", function(){
+
+	new \Meme\Task\Delete("copy");
+	new \Meme\Task\Mkdir("copy", 0777);
+
+	$fs = new FileSet("./", array(), array(".meme/"));
+
+//	print_r($fs->getFiles(true));
+//	print_r($fs->getFiles(false));
+
+	new Copy($fs, "copy");
+
+	new \Meme\Task\Zip("lala.zip", $fs);
+
 
 //	$fs = new \Symfony\Component\Filesystem\Filesystem();
 
-	$cmd = new \Meme\Task\Command("./mongo_migrate", "./44");
+//	$cmd = new \Meme\Task\Command("./mongo_migrate", "./44");
 //	file_put_contents("local.php", file_get_contents("local.php.dist"));
 
 	//$cmd = new \Meme\Task\Command("git status");

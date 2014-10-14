@@ -62,7 +62,7 @@ $cnfDummy = <<<EOT
     name: environment description here
 
     # например, подключение к БД
-    mongo:
+    database:
         username: root
         password: password
         isDebug: true

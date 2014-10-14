@@ -35,7 +35,7 @@ class Chmod extends Task
 				if ($recursive)
 					$r = "recursive";
 
-				Output::comment("Cmod {$mode} for '{$item}' {$r}" );
+				Output::comment("Change file mode on '{$item}' to " . vsprintf("%o", $mode) . " ({$r})" );
 			}, $target);
 
 
