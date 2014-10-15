@@ -20,7 +20,7 @@ class Chmod extends Task
 {
 	public function __construct($target, $mode, $recursive = false, $umask = 0000)
 	{
-		Output::info(">> Start Chmod task");
+		Output::taskHeader("Start Chmod task");
 
 		try
 		{
@@ -35,7 +35,7 @@ class Chmod extends Task
 				if ($recursive)
 					$r = "recursive";
 
-				Output::comment("Change file mode on '{$item}' to " . vsprintf("%o", $mode) . " ({$r})" );
+				Output::info("Change file mode on '{$item}' to " . vsprintf("%o", $mode) . " ({$r})" );
 			}, $target);
 
 

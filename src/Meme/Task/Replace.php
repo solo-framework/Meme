@@ -24,7 +24,7 @@ class Replace extends Task
 	 */
 	public function __construct($target, $regexp, $replacement)
 	{
-		Output::info(">> Start replace task");
+		Output::taskHeader("Start Replace task");
 		clearstatcache();
 
 		//$pattern = "/{$pattern}/";

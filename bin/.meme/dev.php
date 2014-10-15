@@ -40,21 +40,24 @@ $startTarget = new Target("start", function(){
  */
 $mT = new Target("middle", function(){
 
-	$dir = "../copy";
-	new \Meme\Task\Delete($dir);
-	new \Meme\Task\Delete("lala.zip");
-	new \Meme\Task\Mkdir($dir, 0777);
 
-	$fs = new FileSet("./", array(), array(".meme/", "**/.gitignore"));
+	new \Meme\Task\CopyFile("./run.priv", "./kiki/rrrrr.ddd");
 
-//	print_r($fs->getFiles(true));
-//	print_r($fs->getFiles(false));
-
-	new Copy($fs, $dir);
-
-	$zipName = time();
-	new \Meme\Task\Zip("lala.zip", new FileSet($dir));
-	new \Meme\Task\Zip("{$zipName}.zip", new FileSet(".", array("meme")));
+//	$dir = "../copy";
+//	new \Meme\Task\Delete($dir);
+//	new \Meme\Task\Delete("lala.zip");
+//	new \Meme\Task\Mkdir($dir, 0777);
+//
+//	$fs = new FileSet("./", array(), array(".meme/", "**/.gitignore"));
+//
+////	print_r($fs->getFiles(true));
+////	print_r($fs->getFiles(false));
+//
+//	new Copy($fs, $dir);
+//
+//	$zipName = time();
+//	new \Meme\Task\Zip("lala.zip", new FileSet($dir));
+//	new \Meme\Task\Zip("{$zipName}.zip", new FileSet(".", array("meme")));
 
 
 //	$fs = new \Symfony\Component\Filesystem\Filesystem();

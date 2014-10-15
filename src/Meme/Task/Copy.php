@@ -1,11 +1,10 @@
 <?php
 /**
- *
+ * Копирование набора файлов в указанный каталог
  *
  * PHP version 5
  *
- * @created 08.10.2014 22:39
- * @package
+ * @package Task
  * @author  Andrey Filippov <afi@runtime.pro>
  */
 
@@ -17,20 +16,27 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Copy extends Task
 {
-	public function __construct($target, $destination, $overwrite = true)
+	public function __construct($files, $destination, $overwrite = true)
 	{
 		Output::taskHeader("Start Copy task");
 
 		try
 		{
 			$fs = new Filesystem();
-			if ($target instanceof FileSet)
-				$target = $target->getFiles(true);
+			if ($files instanceof FileSet)
+				$files = $files->getFiles(true);
 			else
-				$target = (array)$target;
+				$files = (array)$files;
+
+//			// если это один файл, то просто копируем его в точку назначения
+//			if (count($files) == 1 && is_file($files[0]))
+//			{
+//				Output::info("Copy {$files[0]}  to {$destination}");
+//				return;
+//			}
 
 			$toDir = trim($destination) . DIRECTORY_SEPARATOR;
-			foreach ($target as $file)
+			foreach ($files as $file)
 			{
 				// пустые каталоги копировать не получается, просто создаем
 				if (is_dir($file))
@@ -44,7 +50,7 @@ class Copy extends Task
 				$fs->copy($file, $res);
 			}
 
-			$cnt = count($target);
+			$cnt = count($files);
 			Output::info("{$cnt} items were copied into directory '{$toDir}'");
 		}
 		catch (\Exception $e)
