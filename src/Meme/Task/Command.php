@@ -1,6 +1,12 @@
 <?php
 /**
+ * Выполнение консольной команды
  *
+ * Пример:
+ * new Command("cd /tmp && ls"); // writes a result to console
+ *
+ * $cmd = new Command("cd /tmp && ls", false);
+ * $res = $cmd->getResult();
  *
  * PHP version 5
  *
@@ -22,6 +28,20 @@ class Command extends Task
 
 	protected $result = null;
 
+	/**
+	 * Выполнение консольной команды
+	 * Описание параметров см. https://github.com/symfony/Process
+	 *
+	 * @param string $command Команда
+	 * @param string $cwd Каталог, в контексте которого выполняется команда
+	 * @param bool $verbose Отображать результат в процессе выполнения
+	 * @param array $env The environment variables or null to inherit
+	 * @param null $input The input
+	 * @param int $timeout The timeout in seconds or null to disable
+	 * @param array $options An array of options for proc_open
+	 *
+	 * @throws \Exception
+	 */
 	public function __construct($command, $cwd = null, $verbose = true, array $env = null, $input = null, $timeout = 60, array $options = array())
 	{
 		$cwd = realpath($cwd);
@@ -36,11 +56,16 @@ class Command extends Task
 		});
 
 		if (!$this->process->isSuccessful())
-			throw new \RuntimeException($this->process->getErrorOutput());
+			throw new \Exception($this->process->getErrorOutput());
 
 		$this->result = $this->process->getOutput();
 	}
 
+	/**
+	 * Возвращает результат выполнения команды
+	 *
+	 * @return null|string
+	 */
 	public function getResult()
 	{
 		return $this->result;

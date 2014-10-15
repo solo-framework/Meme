@@ -1,6 +1,8 @@
 <?php
 /**
+ * Создание архива файлов
  *
+ * new \Meme\Task\Zip("result.zip", new FileSet($dir));
  *
  * PHP version 5
  *
@@ -20,9 +22,10 @@ use ZipArchive;
 class Zip extends Task
 {
 	/**
-	 * @param $baseDir
-	 * @param string $fileName Имя файла архива
-	 * @param array $files Список путей файлов для записи в архив
+	 * Создание архива файлов
+	 *
+	 * @param string $zipName Имя файла результирующего архива
+	 * @param \Meme\Types\FileSet $fileset Набор файлов
 	 */
 	public function __construct($zipName, FileSet $fileset)
 	{

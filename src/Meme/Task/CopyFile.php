@@ -2,6 +2,8 @@
 /**
  * Копирует один файл в другой с возможностью переименования
  *
+ * new \Meme\Task\CopyFile("./origin.txt", "./kiki/destination.txt");
+ *
  * PHP version 5
  *
  * @package Task
@@ -15,6 +17,15 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CopyFile extends Task
 {
+	/**
+	 * Копирует один файл в другой с возможностью переименования
+	 *
+	 * @param string $file Копируемый файл
+	 * @param string $destination Файл назначения
+	 * @param bool $overwrite Перезаписывать
+	 *
+	 * @throws \Exception
+	 */
 	public function __construct($file, $destination, $overwrite = true)
 	{
 		Output::taskHeader("Start CopyFile task");

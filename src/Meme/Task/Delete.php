@@ -1,6 +1,16 @@
 <?php
 /**
+ * Удаление набора файлов
  *
+ * $dir = "./dir";
+ * new \Meme\Task\Delete($dir);
+ *
+ * или
+ * new \Meme\Task\Delete(array("./dir", "./dir2"));
+ *
+ * или
+ * $fs = new FileSet("./", array("include/"), array("exclude/"));
+ * new \Meme\Task\Delete($fs);
  *
  * PHP version 5
  *
@@ -18,8 +28,11 @@ class Delete extends Task
 {
 
 	/**
+	 * Удаление набора файлов
+	 *
 	 * @param string|array|FileSet $target Набор файлов для удаления
-	 * @param bool $deleteEmptyDirs
+	 * @param bool $deleteEmptyDirs Удалять пустые каталоги
+	 * @param bool $verbose Отображать процесс выполнения
 	 */
 	public function __construct($target, $deleteEmptyDirs = true, $verbose = true)
 	{

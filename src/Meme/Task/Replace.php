@@ -1,7 +1,9 @@
 <?php
 /**
- * Поиск и замена подстроки по регулярному выражению.
+ * Поиск и замена подстроки по регулярному выражению в файлах
  * Подробности см. http://php.net/manual/ru/function.preg-replace.php
+ *
+ * new \Meme\Task\Replace($tmpFile, "/search_string/", "replace_string");
  *
  * PHP version 5
  *
@@ -18,16 +20,13 @@ use Meme\Types\FileSet;
 class Replace extends Task
 {
 	/**
-	 * @param $target
-	 * @param $regexp
-	 * @param $replacement
+	 * @param string|array|FileSet $target Набор файлов
+	 * @param string $regexp Регулярное выражение
+	 * @param string $replacement Строка для замены
 	 */
 	public function __construct($target, $regexp, $replacement)
 	{
 		Output::taskHeader("Start Replace task");
-		clearstatcache();
-
-		//$pattern = "/{$pattern}/";
 
 		if ($target instanceof FileSet)
 		{

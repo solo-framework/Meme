@@ -1,6 +1,8 @@
 <?php
 /**
+ * Создание директории
  *
+ * new \Meme\Task\Mkdir("../copy", 0777);
  *
  * PHP version 5
  *
@@ -16,6 +18,12 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Mkdir extends Task
 {
+	/**
+	 * Создание директории
+	 *
+	 * @param string|array|FileSet $target Набор каталогов для создания
+	 * @param int $mode Восьмеричная маска прав доступа
+	 */
 	public function __construct($target, $mode)
 	{
 		Output::taskHeader("Start Mkdir task");

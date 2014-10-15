@@ -2,6 +2,9 @@
 /**
  * Копирование набора файлов в указанный каталог
  *
+ * $fs = new FileSet("./", array("include/"), array("exclude/"));
+ * new Copy($fs, "toDir/");
+ *
  * PHP version 5
  *
  * @package Task
@@ -28,20 +31,12 @@ class Copy extends Task
 			else
 				$files = (array)$files;
 
-//			// если это один файл, то просто копируем его в точку назначения
-//			if (count($files) == 1 && is_file($files[0]))
-//			{
-//				Output::info("Copy {$files[0]}  to {$destination}");
-//				return;
-//			}
-
 			$toDir = trim($destination) . DIRECTORY_SEPARATOR;
 			foreach ($files as $file)
 			{
 				// пустые каталоги копировать не получается, просто создаем
 				if (is_dir($file))
 				{
-//					Output::info(">> Creating directory '{$file}'");
 					$fs->mkdir($toDir . $file);
 					continue;
 				}
