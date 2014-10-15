@@ -25,10 +25,10 @@ class Autoload
 		$postfix = '/' . str_replace(array('_', '\\'), '/', $className . '.php');
 
 		// Change BaseDir according to Namespace
-		if (strpos($className, 'Custom\\') === 0)
+		if (strpos($className, 'Meme\\Custom\\') === 0)
 		{
-			$baseDir = getcwd() . '/.meme/tasks';
-			$postfix = substr($postfix, 7);
+			$baseDir = getcwd() . '/.meme/custom';
+			$postfix = substr($postfix, 12);
 
 		}
 		else

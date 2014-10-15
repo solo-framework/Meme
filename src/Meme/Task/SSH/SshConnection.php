@@ -10,9 +10,6 @@
 
 namespace Meme\Task\SSH;
 
-
-use Herrera\Annotations\Exception\Exception;
-
 class SshConnection
 {
 	protected $connection = null;

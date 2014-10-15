@@ -27,11 +27,12 @@ class Command extends Task
 		$cwd = realpath($cwd);
 		$this->process = new Process($command, $cwd, $env, $input, $timeout, $options);
 
-		Output::info("Executing a command '{$command}'");
+		Output::taskHeader("Start Command");
+		Output::comment("Executing a command '{$command}'");
 		$this->process->run(function($a, $b) use ($verbose){
 
 			if ($verbose)
-				Output::comment($b);
+				Output::info($b);
 		});
 
 		if (!$this->process->isSuccessful())

@@ -24,16 +24,21 @@ $project->setStartTask("start");
 //
 // Write your targets and task below
 //
+$link = "http://";
 
 
-$startTarget = new Target("start", function(){
 
-	Output::info("Hello, world!");
-
-}, "middle");
+//$startTarget = new Target("start", function(){
+//
+//	Output::info("Hello, world!");
+//
+//}, "middle");
 
 //$ssh = new SshConnection("runtime.pro", 10022);
 //$ssh->authPublicKey("afi", "./run.pub", "./run.priv");
+
+
+$startTarget = new Target("start", new \Meme\Custom\Target\MyTarget("/var/log"));
 
 /**
  * Таск бла бла бла
@@ -41,7 +46,11 @@ $startTarget = new Target("start", function(){
 $mT = new Target("middle", function(){
 
 
-	new \Meme\Task\CopyFile("./run.priv", "./kiki/rrrrr.ddd");
+	//new \Meme\Custom\TestTask();
+
+
+
+	//new \Meme\Task\CopyFile("./run.priv", "./kiki/rrrrr.ddd");
 
 //	$dir = "../copy";
 //	new \Meme\Task\Delete($dir);

@@ -20,7 +20,11 @@ class Target
 	{
 		$this->depend = $depend;
 		$this->name = $name;
-		$this->fn = $fn;
+
+		if ($fn instanceof ITargetDefinition)
+			$this->fn = $fn->getFunction();
+		else
+			$this->fn = $fn;
 	}
 
 	public function getDepends()
