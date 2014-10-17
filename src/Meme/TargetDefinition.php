@@ -1,11 +1,11 @@
 <?php
 /**
- *
+ * Базовый класс для всех классов, описывающих наборы задач.
  *
  * PHP version 5
  *
- * @package
- * @author  Andrey Filippov <afi@i-loto.ru>
+ * @package Meme
+ * @author  Andrey Filippov <afi@runtime.pro>
  */
 
 namespace Meme;
@@ -15,6 +15,8 @@ abstract class TargetDefinition implements ITargetDefinition
 	protected $fn;
 
 	/**
+	 * Задает функцию, описывающую набор задач
+	 *
 	 * @param mixed $fn
 	 */
 	public function setFunction($fn)
@@ -23,6 +25,8 @@ abstract class TargetDefinition implements ITargetDefinition
 	}
 
 	/**
+	 * Возвращает функцию, описывающую набор задач
+	 *
 	 * @return mixed
 	 */
 	public function getFunction()

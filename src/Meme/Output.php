@@ -1,10 +1,10 @@
 <?php
 /**
- *
+ * Вывод в консоль
  *
  * PHP version 5
  *
- * @package
+ * @package Meme
  * @author  Andrey Filippov <afi@i-loto.ru>
  */
 
@@ -47,7 +47,6 @@ class Output
 	 * Parses a Text to represent Colors in the Terminal/Output.
 	 *
 	 * @param string $string
-	 * @param Config $config
 	 *
 	 * @return string
 	 */

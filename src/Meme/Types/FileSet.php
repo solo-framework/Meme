@@ -53,9 +53,14 @@ class FileSet extends Type
 	 * @param array $excludes
 	 * @param bool $caseSensitive
 	 * @param bool $followSymlinks
+	 *
+	 * @throws \Exception
 	 */
 	public function __construct($baseDir, $includes = array(), $excludes = array(), $caseSensitive = true, $followSymlinks = false)
 	{
+		if (!is_dir($baseDir))
+			throw new \Exception("Base dir '{$baseDir}' doesn't exist");
+
 		if ($baseDir == ".")
 			$baseDir = $baseDir . DIRECTORY_SEPARATOR;
 

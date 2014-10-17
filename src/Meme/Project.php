@@ -1,10 +1,10 @@
 <?php
 /**
- *
+ * Это класс для запуска задач, описанных в сборочном скрипте
  *
  * PHP version 5
  *
- * @package
+ * @package Meme
  * @author  Andrey Filippov <afi@i-loto.ru>
  */
 
@@ -19,36 +19,67 @@ class Project
 
 	protected $name;
 
-	protected $startTask;
+	protected $startTask = "default";
 
+	/**
+	 * Конструктор
+	 *
+	 * @param string $name Название проекта
+	 */
 	public function __construct($name)
 	{
 		$this->name = $name;
 
 	}
 
+	/**
+	 * Установка задачи, выполняемой по-умолчанию
+	 *
+	 * @param string $startTask Имя задачи, выполняемой по-умолчанию
+	 *
+	 * @return void
+	 */
 	public function setStartTask($startTask)
 	{
 		$this->startTask = $startTask;
 	}
 
+	/**
+	 * Добавление набора задач в проект
+	 *
+	 * @param Target $target Набор задач
+	 */
 	public function addTarget(Target $target)
 	{
 		$this->targets[$target->name] = $target;
 	}
 
-	public function run($name)
+	/**
+	 * Выполнение всех наборов задач, описанных в сборочном скрипте
+	 *
+	 * @param string $name Имя задачи по-умолчанию
+	 */
+	public function run($name = null)
 	{
+		if (!$name)
+			$name = $this->startTask;
+
 		clearstatcache();
 		$start = microtime(true);
 
 		Output::mainHeader("Start Meme project '{$this->name}'\n");
+
 		$this->runRecursive($this->getTargetByName($name));
 		$time = round(microtime(true) - $start, 3);
 
 		Output::mainHeader("\nMeme has finished building the project '{$this->name}', it took {$time} sec. \n");
 	}
 
+	/**
+	 * Запуск наборов задач рекурсивно
+	 *
+	 * @param Target $target Набор задач
+	 */
 	protected function runRecursive(Target $target)
 	{
 		$deps = $target->getDepends();
@@ -62,6 +93,14 @@ class Project
 		$target->run();
 	}
 
+	/**
+	 * Возвращает набор задач по имени
+	 *
+	 * @param $name
+	 *
+	 * @return Target
+	 * @throws \Exception
+	 */
 	protected function getTargetByName($name)
 	{
 		if(!array_key_exists($name, $this->targets))

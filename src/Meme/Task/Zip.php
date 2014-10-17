@@ -31,22 +31,26 @@ class Zip extends Task
 	{
 		Output::taskHeader("Start Zip task");
 		$files = $fileset->getFiles(true);
+		$baseDir = $this->normalizeSlashes(rtrim($fileset->getBaseDir(), '\/') . "/");
 
 		$zip = new \ZipArchive();
 		$res = $zip->open($zipName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
-
 		if ($res === true)
 		{
 			foreach ($files as $file)
 			{
 				$fileName = trim($file);
+				$fname = $this->normalizeSlashes($fileName);
+				$fname = str_replace($baseDir, "", $fname);
+
 				if (is_dir($file))
 				{
-					$zip->addEmptyDir(str_replace($fileset->getBaseDir(), "", $fileName));
+					$fname = "./" . ltrim($fname, '\/');
+					$zip->addEmptyDir($fname);
 				}
 				else
 				{
-					$zip->addFile($fileName, str_replace($fileset->getBaseDir(), "", $fileName));//$file);
+					$zip->addFile($fileName, $fname);
 				}
 			}
 
@@ -58,5 +62,10 @@ class Zip extends Task
 		}
 
 		$zip->close();
+	}
+
+	protected function normalizeSlashes($string)
+	{
+		return str_replace("\\", "/", $string);
 	}
 }

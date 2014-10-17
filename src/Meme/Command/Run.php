@@ -74,7 +74,7 @@ class Run extends BaseCommand
 			$project = new Project(Config::get("name"), "start");
 
 			include $env;
-			$project->run("start");
+			$project->run();
 		}
 		catch (\Exception $e)
 		{

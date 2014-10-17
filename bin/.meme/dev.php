@@ -19,7 +19,7 @@ use Meme\Types\FileSet;
  * @var $project Project
  */
 
-$project->setStartTask("start");
+$project->setStartTask("middle");
 
 //
 // Write your targets and task below
@@ -38,13 +38,14 @@ $link = "http://";
 //$ssh->authPublicKey("afi", "./run.pub", "./run.priv");
 
 
-$startTarget = new Target("start", new \Meme\Custom\Target\MyTarget("/var/log"));
+//$startTarget = new Target("start", new \Meme\Custom\Target\MyTarget("/var/log"));
 
 /**
  * Таск бла бла бла
  */
 $mT = new Target("middle", function(){
 
+	new \Meme\Task\Zip(time() . ".zip", new FileSet("../zip/", array()));
 
 	//new \Meme\Custom\TestTask();
 
@@ -95,6 +96,6 @@ $end = new Target("end", function(){
 	Output::info("Hello from end!");
 });
 
-$project->addTarget($startTarget);
+//$project->addTarget($startTarget);
 $project->addTarget($mT);
 $project->addTarget($end);
