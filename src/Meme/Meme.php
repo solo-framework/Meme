@@ -10,6 +10,7 @@
 
 namespace Meme;
 
+use Meme\Command\ListEnv;
 use Symfony\Component\Console\Application;
 
 class Meme extends Application
@@ -27,6 +28,7 @@ class Meme extends Application
 		$this->addCommands(array(
 			new Command\Init(),
 			new Command\Run(),
+			new Command\Info()
 		));
 	}
 

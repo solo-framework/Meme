@@ -57,5 +57,21 @@ class BaseCommand extends Command
 			}
 		}
 	}
+
+	protected function execute(InputInterface $input, OutputInterface $output)
+	{
+		Output::mainHeader("
+
+========================================
+   ____ __    ___   ____ __    ___
+  / __ `__ \ / _ \ / __ `__ \ / _ \
+ / / / / / /(  __// / / / / /(  __/
+/_/ /_/ /_/  \__//_/ /_/ /_/  \__/
+
+    PHP build & deployment tool
+========================================
+
+		");
+	}
 }
 

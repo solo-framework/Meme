@@ -18,9 +18,12 @@ class Config
 {
 	protected static $cnf = null;
 
+	protected static $yaml = null;
+
 	public static function init($configFile, $envName)
 	{
 		$yaml = Yaml::parse($configFile);
+		self::$yaml = $yaml;
 		if (array_key_exists($envName, $yaml))
 			self::$cnf = $yaml[$envName];
 		else
@@ -31,6 +34,12 @@ class Config
 	public static function get($key)
 	{
 		return self::$cnf[$key];
+	}
+
+	public static function read($configFile)
+	{
+		self::$yaml = Yaml::parse($configFile);
+		return self::$yaml;
 	}
 
 }
