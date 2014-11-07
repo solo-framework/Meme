@@ -45,7 +45,11 @@ $link = "http://";
  */
 $mT = new Target("middle", function(){
 
-	new \Meme\Task\Zip(time() . ".zip", new FileSet("../zip/", array()));
+//	$cmd = new \Meme\Task\Command("php ./loop.php > /dev/null 2>&1 &");
+//	$cmd = new \Meme\Task\Command("php ./loop.php </dev/null & ");
+//	$cmd = new \Meme\Task\Command("php -v");
+
+	//new \Meme\Task\Zip(time() . ".zip", new FileSet("../zip/", array()));
 
 	//new \Meme\Custom\TestTask();
 
