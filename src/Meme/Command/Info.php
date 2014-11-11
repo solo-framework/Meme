@@ -14,6 +14,7 @@ use Meme\Config;
 use Meme\Output;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\Table;
 
 class Info extends BaseCommand
 {
@@ -39,18 +40,27 @@ class Info extends BaseCommand
 
 		$cnf = Config::read($yml);
 		Output::info("You have " . count($cnf) . " env(s):");
+
+		$table = new Table($output);
+		$table->setHeaders(array("Environment name", "Status"));
+		$rows = array();
+
 		foreach ($cnf as $k => $v)
 		{
 			$cnfFile = "{$configDir}/{$k}.php";
 			$ok = "";
 			if (is_file($cnfFile))
-				$ok = "...ok";
+				$ok = "ok";
 			else
-				$ok = "...file {$cnfFile} doesn't exist";
+				$ok = "file {$cnfFile} doesn't exist";
 
-			Output::info("{$k}: {$v['name']} {$ok}");
+			$rows[] = array($v['name'], $ok);
+
+			//Output::info("{$k}: {$v['name']} {$ok}");
 		}
 
+		$table->setRows($rows);
+		$table->render();
 	}
 }
 

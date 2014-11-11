@@ -21,7 +21,7 @@ class Target
 	 *
 	 * @param string $name
 	 * @param callable|ITargetDefinition $fn Анонимная функция
-	 * @param string $depend Список наборов задач, которые должны быть
+	 * @param string $depend Список наборов задач через запятую, которые должны быть
 	 *                       выполнены перед этим набором
 	 */
 	public function __construct($name, $fn, $depend = null)
