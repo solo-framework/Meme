@@ -7,6 +7,12 @@
 	<link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
 	<link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
 	<link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+
+	<script type="text/javascript" src="javascripts/jquery-1.9.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="javascripts/highlight/styles/ir_black.css" media="screen">
+	<script type="text/javascript" src="javascripts/highlight/highlight.pack.js"></script>
+
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
@@ -14,6 +20,20 @@
 </head>
 
 <body>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		hljs.configure({
+			tabReplace: '    '
+		});
+
+		$('pre code').each(function(i, block) {
+			hljs.highlightBlock(block);
+		});
+	});
+</script>
+
 <div id="container">
 	<div class="inner">
 
@@ -44,7 +64,8 @@
 			<h3>Термины и соглашения</h3>
 			<p>Проект - это каталог .meme, который содержит файлы конфигурации и сценарии сборки</p>
 			<p>Сценарий сборки - это PHP скрипт, описывающий последовательность целей (targets). Можно задавать зависимость одной цели от других и, таким образом, объединять их последовательности для выполнения в определенном порядке.</p>
-			<p>Цель - это функция, состоящая из последовательности задач (tasks)</p>
+			<p>Цель - это функция, состоящая из последовательности задач (tasks), имеет уникальное имя в проекте. Цель может зависеть от других целей.</p>
+			<p>Задача - это PHP-класс, выполняющий какое-то действие. Например, копирование файла, изменение прав доступа и пр.</p>
 
 			<h3>Установка</h3>
 
@@ -53,6 +74,7 @@
 
 <pre>
 	<code>
+$ composer install
 $ php box.phar build
 	</code>
 </pre>
@@ -85,18 +107,17 @@ $ php meme.phar run -e demo-env
 	</code>
 </pre>
 
-
-
-
-
 			<h1>Начало работы</h1>
 			<h3>Конфигурация проекта</h3>
-			<p>Файл конфигурации config.yml имеет формат YAML и определяет настройки окружения (environment) для каждого сценария.</p>
+			<p>
+				Файл конфигурации config.yml имеет формат YAML и определяет настройки окружения (environment) для каждого сценария.
+				Параметр <strong>name</strong> является обязательным для каждого окружения.
+			</p>
 			<p>
 <pre>
-	<code>
+	<code class="yaml">
 #
-# конфигурационный файл Meme-проекта
+# пример конфигурационного файла проекта
 #
 demo-env:
 
@@ -119,53 +140,178 @@ demo-env:
 
 			<h3>Составление сценария</h3>
 
+			<p>Рассмотрим простейший сценарий в файле demo-env.php</p>
+
 			<p>
 
 <pre>
-	<code>
-
+	<code class="php">
 
 use Meme\Output;
 use Meme\Project;
 use Meme\Types;
 use Meme\Target;
 
-/**
- * @var $project Project
- */
+// указываем имя цели, которая будет выполняться первой
+$project->setStartTarget("start");
 
-$project->setStartTask("start");
+// далее описываем цели
+$start = new Target("start", function(){
 
-	//
-	// Write your targets and task below
-	//
-
-	// for example
-	$startTarget = new Target("start", function(){
-
+	// внутри цели описываем последовательность задач
 	Output::info("Hello, world!");
 
-	}, "end,middle"/*, add dependencies here*/);
+});
 
-
-	$end = new Target("end", function(){
-	Output::info("Hello from end!");
-	});
-
-	$middle = new Target("middle", function(){
-	Output::info("Hello from middle!");
-	});
-
-	// don't forget to add your targets to the project
-	$project->addTarget($startTarget);
-	$project->addTarget($middle);
-	$project->addTarget($end);
+// добавим цель в проект
+$project->addTarget($start);
 
 
 	</code>
 </pre>
 
+</p>
+
+<p>
+	Запустим его командой
+<pre>
+	<code>
+$ php meme.phar run -e demo-env
+	</code>
+</pre>
+
+	в результате, в консоль будет выведено
+</p>
+
+<p>
+	<pre><code>
+run target > 'start':
+
+	Hello, world!
+	</code></pre>
+</p>
+
+
+			<h3>Цели</h3>
+			<p>
+				Как было сказано выше, цель - это функция, состоящая из последовательности задач (tasks).
+				Цель имеет уникальное имя в проекте и список названий других целей, от которых она зависит.
 			</p>
+			<p>
+				Например, если цель A зависит от цели B, то сначала выполнится B, затем A.
+				В примере ниже выполнение будет происходить в порядке: end, middle, start
+			</p>
+
+<pre><code class="php">
+
+use Meme\Output;
+use Meme\Project;
+use Meme\Types;
+use Meme\Target;
+
+// указываем имя цели, которая будет выполняться первой
+$project->setStartTarget("start");
+
+// первый параметр - уникальное имя (идентификатор) цели
+// второй - анонимная функция, описывает последовательность задач
+// третий - список целей через запятую, от которых зависит текущая цель
+$start = new Target(
+	"start",
+	function(){	Output::info("Hello, world!"); },
+	"end,middle"
+);
+
+
+$end = new Target("end", function(){
+	Output::info("Hello from end!");
+});
+
+$middle = new Target("middle", function(){
+	Output::info("Hello from middle!");
+});
+
+// не забываем добавить существующие цели в проект
+$project->addTarget($start);
+$project->addTarget($middle);
+$project->addTarget($end);
+</code></pre>
+
+<p>Результатом выполнения будет:</p>
+
+
+<p>
+<pre><code>
+run target > 'end':
+
+Hello from end!
+run target > 'middle':
+
+Hello from middle!
+run target > 'start':
+
+Hello, world!
+</code></pre>
+</p>
+
+		<h3>Сделаем что-нибудь полезное</h3>
+		<p>Допустим, у нас есть задача - вывести список всех файлов и директорий в каталоге .meme, затем сформировать из них архив и сохранить в файле с именем meme_project.zip</p>
+
+<p>
+<pre><code>
+
+use Meme\Output;
+use Meme\Project;
+use Meme\Types;
+use Meme\Target;
+
+// указываем имя цели, которая будет выполняться первой
+$project->setStartTarget("default");
+
+// далее описываем цели
+$target = new Target("default", function(){
+
+	// получить список всех файлов в каталоге .meme
+	$fileSet = new Types\FileSet(".meme");
+	$files = $fileSet->getFiles();
+
+	Output::info("I've got files:\n");
+	foreach ($files as $file)
+		Output::info($file);
+
+	// получить список только PHP файлов во всех вложенных каталогах
+	// и упаковать их в архив meme_project.zip
+	$fileSet = new Types\FileSet(".meme", array("**.php"));
+	new \Meme\Task\Zip("meme_project.zip", $fileSet);
+
+});
+
+// не забываем добавить существующие цели в проект
+$project->addTarget($target);
+</code></pre>
+
+Результат:
+<pre><code>
+Start Meme project 'make-zip'
+
+run target > 'default':
+
+	I've got files:
+
+	config.yml
+	custom/.gitignore
+	deploy-demo.php
+	deploy-dev.php
+	make-zip.php
+	release-demo.php
+	release-production.php
+	custom
+
+>> Start Zip task
+	Created zip file meme_project.zip
+
+</code></pre>
+</p>
+
 
 			<h1>Встроенные задачи</h1>
 
