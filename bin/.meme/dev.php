@@ -19,7 +19,7 @@ use Meme\Types\FileSet;
  * @var $project Project
  */
 
-$project->setStartTask("middle");
+$project->setStartTarget("middle");
 
 //
 // Write your targets and task below

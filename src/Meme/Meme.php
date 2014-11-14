@@ -19,7 +19,7 @@ class Meme extends Application
 	{
 		set_error_handler(array($this, "throwErrorException"));
 
-		parent::__construct("\nWelcome to Meme - build and deployment tool");
+		parent::__construct("\nWelcome to Meme - build and deployment tool", "");
 		$this->setCatchExceptions(true);
 		$this->setAutoExit(true);
 

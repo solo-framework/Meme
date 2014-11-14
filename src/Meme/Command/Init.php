@@ -84,7 +84,7 @@ use Meme\Target;
  * @var \$project Project
  */
 
-\$project->setStartTask("start");
+\$project->setStartTarget("start");
 
 //
 // Write your targets and task below

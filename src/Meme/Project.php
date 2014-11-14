@@ -19,7 +19,7 @@ class Project
 
 	protected $name;
 
-	protected $startTask = "default";
+	protected $startTarget = "default";
 
 	/**
 	 * Конструктор
@@ -39,9 +39,9 @@ class Project
 	 *
 	 * @return void
 	 */
-	public function setStartTask($startTask)
+	public function setStartTarget($startTask)
 	{
-		$this->startTask = $startTask;
+		$this->startTarget = $startTask;
 	}
 
 	/**
@@ -62,7 +62,7 @@ class Project
 	public function run($name = null)
 	{
 		if (!$name)
-			$name = $this->startTask;
+			$name = $this->startTarget;
 
 		clearstatcache();
 		$start = microtime(true);
