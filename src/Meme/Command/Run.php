@@ -34,6 +34,12 @@ class Run extends BaseCommand
 						InputOption::VALUE_REQUIRED,
 						'Name of environment to run'
 				)
+				->addOption(
+						"add",
+						"a",
+						InputOption::VALUE_OPTIONAL,
+						"Additional config file"
+				)
 				->addOption("debug", "d", InputOption::VALUE_OPTIONAL, "Run in debug mode")
 		;
 	}
@@ -52,13 +58,24 @@ class Run extends BaseCommand
 			Output::error("You should create build file {$env}");
 			exit();
 		}
+
+		$additionalFile = $input->getOption("add");
+		$additionalConfig = null;
+		if ($additionalFile && !is_file($additionalFile))
+		{
+			Output::error("can't read an additional config '{$additionalFile}'");
+			exit();
+		}
+
+		print_r($additionalFile);
+
 		$yml = $configDir . "/config.yml";
 
 		parent::execute($input, $output);
 
 		try
 		{
-			Config::init($yml, $envName);
+			Config::init($envName, $yml, $additionalFile);
 			$project = new Project(Config::get("name"), "start");
 
 			include $env;
