@@ -28,12 +28,15 @@ class Command extends Task
 
 	protected $result = null;
 
+	protected $error = null;
+
 	/**
 	 * Выполнение консольной команды
 	 * Описание параметров см. https://github.com/symfony/Process
 	 *
 	 * @param string $command Команда
 	 * @param string $cwd Каталог, в контексте которого выполняется команда
+	 * @param bool $ignoreError Игнорировать ошибки выполнения команды
 	 * @param bool $verbose Отображать результат в процессе выполнения
 	 * @param array $env The environment variables or null to inherit
 	 * @param null $input The input
@@ -42,7 +45,7 @@ class Command extends Task
 	 *
 	 * @throws \Exception
 	 */
-	public function __construct($command, $cwd = null, $verbose = true, array $env = null, $input = null, $timeout = 60, array $options = array())
+	public function __construct($command, $cwd = null, $ignoreError = false, $verbose = true, array $env = null, $input = null, $timeout = 60, array $options = array())
 	{
 		$cwd = realpath($cwd);
 		$this->process = new Process($command, $cwd, $env, $input, $timeout, $options);
@@ -56,7 +59,13 @@ class Command extends Task
 		});
 
 		if (!$this->process->isSuccessful())
-			throw new \Exception($this->process->getErrorOutput());
+		{
+			if (!$ignoreError)
+				throw new \Exception($this->process->getErrorOutput());
+			else
+				$this->error = $this->process->getErrorOutput();
+		}
+
 
 		$this->result = $this->process->getOutput();
 	}
@@ -69,6 +78,16 @@ class Command extends Task
 	public function getResult()
 	{
 		return $this->result;
+	}
+
+	/**
+	 * Возвращает описание ошибки при выполнении команды
+	 *
+	 * @return null|string
+	 */
+	public function getError()
+	{
+		return $this->error;
 	}
 }
 
