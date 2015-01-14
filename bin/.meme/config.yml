@@ -1,0 +1,52 @@
+# Конфигурационный файл
+
+dev:
+
+    name: citycard development environment
+
+    settings:
+        assets-debug: true
+        assets-ttl: 0
+
+        mongo-server: mongodb://root:password@localhost
+        mongo-dbname: citycard
+
+        moneta-username: finance@citycard.ru
+        moneta-password: moneta147
+        moneta-wsdl: https://moneta.ru/services.wsdl
+        moneta-version: VERSION_2
+
+    # подключение к БД
+    mongo:
+        username: root
+        password: password
+        isDebug: true
+        dsn: mysql:host=ubuntu;dbname=box
+
+
+    # секция для загрузки сборок на серверы
+    servers:
+        19323:
+            active: true
+            host: myhost
+            password: dsdsds
+
+        193231:
+            active: false
+            host: myhost
+            password: dsdsds
+
+        193232:
+            active: false
+            host: myhost
+            password: dsdsds
+
+production:
+
+    # Описание Meme-проекта
+    name: citycard PRODUCTION environment
+
+    # подключение к БД
+    mongo:
+        server: mongodb://cityUser:password@localhost/citycard
+        dbname: citycard
