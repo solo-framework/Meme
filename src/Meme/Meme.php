@@ -15,11 +15,11 @@ use Symfony\Component\Console\Application;
 
 class Meme extends Application
 {
-	public function __construct()
+	public function __construct($version)
 	{
 		set_error_handler(array($this, "throwErrorException"));
 
-		parent::__construct("\nWelcome to Meme - build and deployment tool", "");
+		parent::__construct("\nWelcome to Meme - build and deployment tool", $version);
 		$this->setCatchExceptions(true);
 		$this->setAutoExit(true);
 

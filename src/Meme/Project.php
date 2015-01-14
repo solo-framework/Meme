@@ -63,7 +63,7 @@ class Project
 	{
 		if (!$name)
 			$name = $this->startTarget;
-
+print_r($name);
 		clearstatcache();
 		$start = microtime(true);
 

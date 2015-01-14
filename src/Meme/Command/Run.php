@@ -41,6 +41,7 @@ class Run extends BaseCommand
 						"Additional config file"
 				)
 				->addOption("debug", "d", InputOption::VALUE_OPTIONAL, "Run in debug mode")
+				->addOption("target", "t", InputOption::VALUE_OPTIONAL, "Execute a concrete target")
 		;
 	}
 
@@ -50,6 +51,8 @@ class Run extends BaseCommand
 		$envName = $input->getOption("env");
 		if (!$envName)
 			throw new \Exception("You should set an environment name");
+
+		$targetName = $input->getOption("target");
 
 		$configDir = getcwd() . "/.meme";
 		$env = $configDir . "/{$envName}.php";
@@ -67,7 +70,7 @@ class Run extends BaseCommand
 			exit();
 		}
 
-		print_r($additionalFile);
+		//print_r($additionalFile);
 
 		$yml = $configDir . "/config.yml";
 
@@ -76,10 +79,10 @@ class Run extends BaseCommand
 		try
 		{
 			Config::init($envName, $yml, $additionalFile);
-			$project = new Project(Config::get("name"), "start");
+			$project = new Project(Config::get("name"));
 
 			include $env;
-			$project->run();
+			$project->run($targetName);
 		}
 		catch (\Exception $e)
 		{

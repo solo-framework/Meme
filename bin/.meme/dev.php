@@ -40,6 +40,12 @@ $link = "http://";
 
 //$startTarget = new Target("start", new \Meme\Custom\Target\MyTarget("/var/log"));
 
+$f =  new Target("test", function(){
+
+	echo "ffffffffffffffffffff";
+
+});
+
 /**
  * Таск бла бла бла
  */
@@ -103,3 +109,4 @@ $end = new Target("end", function(){
 //$project->addTarget($startTarget);
 $project->addTarget($mT);
 $project->addTarget($end);
+$project->addTarget($f);
