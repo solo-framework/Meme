@@ -20,21 +20,41 @@ use Meme\Types\FileSet;
 class Replace extends Task
 {
 	/**
+	 * @var array|FileSet|string
+	 */
+	protected $target;
+	/**
+	 * @var string
+	 */
+	protected $regexp;
+	/**
+	 * @var string
+	 */
+	protected $replacement;
+
+	/**
 	 * @param string|array|FileSet $target Набор файлов
 	 * @param string $regexp Регулярное выражение
 	 * @param string $replacement Строка для замены
 	 */
 	public function __construct($target, $regexp, $replacement)
 	{
+		$this->target = $target;
+		$this->regexp = $regexp;
+		$this->replacement = $replacement;
+	}
+
+	public function run()
+	{
 		Output::taskHeader("Start Replace task");
 
-		if ($target instanceof FileSet)
+		if ($this->target instanceof FileSet)
 		{
-			$target = $target->getFiles(true);
+			$target = $this->target->getFiles(true);
 		}
 		else
 		{
-			$target = (array)$target;
+			$target = (array)$this->target;
 		}
 
 		foreach ($target as $file)
@@ -42,7 +62,7 @@ class Replace extends Task
 			if (is_file($file) && is_writable($file))
 			{
 				$content = file_get_contents($file);
-				$content = preg_replace($regexp, $replacement, $content);
+				$content = preg_replace($this->regexp, $this->replacement, $content);
 				file_put_contents($file, $content);
 			}
 			else

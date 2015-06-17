@@ -27,21 +27,76 @@ use Meme\Task\Task;
 class SshCommand extends Task
 {
 	/**
+	 * @var SshConnection
+	 */
+	protected $conn;
+
+	/**
+	 * @var string
+	 */
+	protected $command;
+
+	/**
+	 * @var bool
+	 */
+	protected $display;
+
+	/**
 	 * Выполнение команды на удаленном сервере
 	 *
 	 * @param SshConnection $conn Ссылка на соединение
 	 * @param string $command Команда
 	 * @param bool $display Выводить результат сразу или возвращать в переменную
 	 *
-	 * @return string | null
 	 */
 	public function __construct(SshConnection $conn, $command, $display = false)
 	{
+		$this->conn = $conn;
+		$this->command = $command;
+		$this->display = $display;
+	}
+
+	/**
+	 * Генерирует команду, которую можно выполнить
+	 * в контексте суперпользователя
+	 *
+	 * @param string $cmd Команда
+	 * @param string $password Пароль суперпользователя
+	 *
+	 * @return string
+	 */
+//	public static function sudoCommand($cmd, $password)
+//	{
+//		return "echo '{$password}' | sudo -S " . $cmd;
+//	}
+
+	/**
+	 * Генерирует команду, которую можно выполнить
+	 * в контексте суперпользователя
+	 *
+	 * @param $password
+	 *
+	 * @return $this
+	 */
+	public function sudo($password)
+	{
+		$this->command = "echo '{$password}' | sudo -S " . $this->command;
+		return $this;
+	}
+
+	/**
+	 * Выполнение действия
+	 *
+	 * @return mixed
+	 */
+	public function run()
+	{
 		try
 		{
-			Output::comment(">>>> executing command: {$command}");
-			$connection = $conn->getConnection();
-			$stream = ssh2_exec($connection, $command);
+			Output::taskHeader("Start SSHCommand task");
+			Output::comment("executing command: {$this->command}");
+			$connection = $this->conn->getConnection();
+			$stream = ssh2_exec($connection, $this->command);
 			if (!$stream)
 				throw new \Exception("Could not execute command!");
 
@@ -59,9 +114,9 @@ class SshCommand extends Task
 			if (isset($stderrStream))
 				fclose($stderrStream);
 
-			if ($display)
+			if ($this->display)
 			{
-				print $result;
+				Output::info($result);
 				return $result;
 			}
 			else
@@ -76,17 +131,14 @@ class SshCommand extends Task
 	}
 
 	/**
-	 * Генерирует команду, которую можно выполнить
-	 * в контексте суперпользователя
+	 * @param boolean $display
 	 *
-	 * @param string $cmd Команда
-	 * @param string $password Пароль суперпользователя
-	 *
-	 * @return string
+	 * @return $this
 	 */
-	public static function sudoCommand($cmd, $password)
+	public function setDisplay($display)
 	{
-		return "echo '{$password}' | sudo -S " . $cmd;
+		$this->display = $display;
+		return $this;
 	}
 }
 

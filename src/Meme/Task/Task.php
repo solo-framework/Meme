@@ -12,6 +12,11 @@ namespace Meme\Task;
 
 abstract class Task
 {
-
+	/**
+	 * Выполнение действия
+	 *
+	 * @return mixed
+	 */
+	public abstract function run();
 }
 

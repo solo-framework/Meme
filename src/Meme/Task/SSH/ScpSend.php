@@ -19,33 +19,74 @@ use Meme\Task\Task;
 class ScpSend extends Task
 {
 	protected $connection = null;
+	/**
+	 * @var SshConnection
+	 */
+	protected $ssh;
+	/**
+	 * @var
+	 */
+	protected $toDir;
+	/**
+	 * @var
+	 */
+	protected $file;
+	/**
+	 * @var null
+	 */
+	protected $mode;
+	/**
+	 * @var bool
+	 */
+	protected $autocreate = true;
 
+	/**
+	 * @param SshConnection $ssh
+	 * @param $toDir
+	 * @param $file
+	 * @param null $mode
+	 */
 	public function __construct(SshConnection $ssh, $toDir, $file, $mode = null, $autocreate = true)
+	{
+		$this->ssh = $ssh;
+		$this->toDir = $toDir;
+		$this->file = $file;
+		$this->mode = $mode;
+		$this->autocreate = $autocreate;
+	}
+
+	/**
+	 * Выполнение действия
+	 *
+	 * @return mixed
+	 * @throws \Exception
+	 */
+	public function run()
 	{
 		Output::info(">> Start ScpSend task");
 
-		$this->connection = $ssh->getConnection();
+		$this->connection = $this->ssh->getConnection();
 
-		$path = rtrim($toDir, "/") . "/";
-		$localEndpoint = $file;
+		$path = rtrim($this->toDir, "/") . "/";
+		$localEndpoint = $this->file;
 
 		if (!is_file($localEndpoint))
 			throw new \Exception("Could not open local file '{$localEndpoint}'");
 
-		$file = ltrim($file, ".\/");
+		$file = ltrim($this->file, ".\/");
 		$remoteEndpoint = $path . strtr($file, '\\', '/');
 
 		Output::comment("\t Send from '{$localEndpoint}' to '{$remoteEndpoint}'");
 
 		$sftp = null;
-		if ($autocreate)
+		if ($this->autocreate)
 			$sftp = ssh2_sftp($this->connection);
 
-		if ($autocreate)
-			ssh2_sftp_mkdir($sftp, dirname($remoteEndpoint), (is_null($mode) ? 0777 : $mode), true);
+		if ($this->autocreate)
+			ssh2_sftp_mkdir($sftp, dirname($remoteEndpoint), (is_null($this->mode) ? 0777 : $this->mode), true);
 
-		if (!is_null($mode))
-			$ret = @ssh2_scp_send($this->connection, $localEndpoint, $remoteEndpoint, $mode);
+		if (!is_null($this->mode))
+			$ret = @ssh2_scp_send($this->connection, $localEndpoint, $remoteEndpoint, $this->mode);
 		else
 			$ret = @ssh2_scp_send($this->connection, $localEndpoint, $remoteEndpoint);
 
@@ -53,5 +94,6 @@ class ScpSend extends Task
 			throw new \Exception("Could not create remote file '" . $remoteEndpoint . "'");
 
 	}
+
 }
 

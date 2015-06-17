@@ -26,6 +26,18 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Delete extends Task
 {
+	/**
+	 * @var array|FileSet|string
+	 */
+	protected $target;
+	/**
+	 * @var bool
+	 */
+	protected $deleteEmptyDirs;
+	/**
+	 * @var bool
+	 */
+	protected $verbose;
 
 	/**
 	 * Удаление набора файлов
@@ -36,21 +48,28 @@ class Delete extends Task
 	 */
 	public function __construct($target, $deleteEmptyDirs = true, $verbose = true)
 	{
+		$this->target = $target;
+		$this->deleteEmptyDirs = $deleteEmptyDirs;
+		$this->verbose = $verbose;
+	}
+
+	public function run()
+	{
 		Output::taskHeader("Start Delete task");
 
-		if ($target instanceof FileSet)
+		if ($this->target instanceof FileSet)
 		{
-			$target = $target->getFiles(true);
+			$target = $this->target->getFiles(true);
 		}
 		else
 		{
-			$target = (array)$target;
+			$target = (array)$this->target;
 		}
 
 		$fs = new Filesystem();
 		$fs->remove($target);
 
-		if ($verbose)
+		if ($this->verbose)
 		{
 			foreach ($target as $file)
 				Output::info("Deleted {$file}");
@@ -60,5 +79,26 @@ class Delete extends Task
 		Output::info("{$cnt} file(s) were deleted");
 	}
 
+	/**
+	 * @param boolean $deleteEmptyDirs
+	 *
+	 * @return $this
+	 */
+	public function setDeleteEmptyDirs($deleteEmptyDirs)
+	{
+		$this->deleteEmptyDirs = $deleteEmptyDirs;
+		return $this;
+	}
+
+	/**
+	 * @param boolean $verbose
+	 *
+	 * @return $this
+	 */
+	public function setVerbose($verbose)
+	{
+		$this->verbose = $verbose;
+		return $this;
+	}
 }
 

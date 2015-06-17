@@ -22,6 +22,15 @@ use ZipArchive;
 class Zip extends Task
 {
 	/**
+	 * @var string
+	 */
+	private $zipName;
+	/**
+	 * @var FileSet
+	 */
+	private $fileset;
+
+	/**
 	 * Создание архива файлов
 	 *
 	 * @param string $zipName Имя файла результирующего архива
@@ -29,12 +38,28 @@ class Zip extends Task
 	 */
 	public function __construct($zipName, FileSet $fileset)
 	{
+		$this->zipName = $zipName;
+		$this->fileset = $fileset;
+	}
+
+	protected function normalizeSlashes($string)
+	{
+		return str_replace("\\", "/", $string);
+	}
+
+	/**
+	 * Выполнение действия
+	 *
+	 * @return mixed
+	 */
+	public function run()
+	{
 		Output::taskHeader("Start Zip task");
-		$files = $fileset->getFiles(true);
-		$baseDir = $this->normalizeSlashes(rtrim($fileset->getBaseDir(), '\/') . "/");
+		$files = $this->fileset->getFiles(true);
+		$baseDir = $this->normalizeSlashes(rtrim($this->fileset->getBaseDir(), '\/') . "/");
 
 		$zip = new \ZipArchive();
-		$res = $zip->open($zipName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
+		$res = $zip->open($this->zipName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
 		if ($res === true)
 		{
 			foreach ($files as $file)
@@ -54,18 +79,17 @@ class Zip extends Task
 				}
 			}
 
-			Output::comment("Created zip file {$zipName}");
+			Output::comment("Created zip file {$this->zipName}");
 		}
 		else
 		{
-			Output::error("ZIP error");
+			$report = error_get_last();
+			$message = "";
+			if ($report)
+				$message = $report["message"];
+			Output::error("ZIP error: {$message}");
 		}
 
 		$zip->close();
-	}
-
-	protected function normalizeSlashes($string)
-	{
-		return str_replace("\\", "/", $string);
 	}
 }
