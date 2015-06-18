@@ -87,7 +87,7 @@ class Output
 
 	public static function taskHeader($message)
 	{
-		self::$output->writeln("   <taskHeader>>> {$message}</taskHeader>");
+		self::$output->writeln("\t<taskHeader>>> {$message}</taskHeader>");
 	}
 
 	public static function targetHeader($message)

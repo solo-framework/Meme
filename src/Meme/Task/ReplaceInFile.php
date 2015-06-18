@@ -17,7 +17,7 @@ namespace Meme\Task;
 use Meme\Output;
 use Meme\Types\FileSet;
 
-class Replace extends Task
+class ReplaceInFile extends Task
 {
 	/**
 	 * @var array|FileSet|string
@@ -34,8 +34,8 @@ class Replace extends Task
 
 	/**
 	 * @param string|array|FileSet $target Набор файлов
-	 * @param string $regexp Регулярное выражение
-	 * @param string $replacement Строка для замены
+	 * @param mixed $regexp Регулярное выражение
+	 * @param mixed $replacement Строка для замены
 	 */
 	public function __construct($target, $regexp, $replacement)
 	{
@@ -46,7 +46,7 @@ class Replace extends Task
 
 	public function run()
 	{
-		Output::taskHeader("Start Replace task");
+		Output::taskHeader("Start ReplaceInFile task");
 
 		if ($this->target instanceof FileSet)
 		{

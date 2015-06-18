@@ -64,28 +64,6 @@ class Command extends Task
 	 */
 	public function __construct($command = "", $cwd = null, $ignoreError = false, $verbose = true, array $env = null, $input = null, $timeout = 60, array $options = array())
 	{
-
-//		$cwd = realpath($cwd);
-//		$this->process = new Process($command, $cwd, $env, $input, $timeout, $options);
-//
-//		Output::taskHeader("Start Command");
-//		Output::comment("Executing a command '{$command}'");
-//		$this->process->run(function($a, $b) use ($verbose){
-//
-//			if ($verbose)
-//				Output::info($b);
-//		});
-//
-//		if (!$this->process->isSuccessful())
-//		{
-//			if (!$ignoreError)
-//				throw new \Exception($this->process->getErrorOutput());
-//			else
-//				$this->error = $this->process->getErrorOutput();
-//		}
-//
-//
-//		$this->result = $this->process->getOutput();
 		$this->command = $command;
 		$this->cwd = realpath($cwd);
 		$this->ignoreError = $ignoreError;
