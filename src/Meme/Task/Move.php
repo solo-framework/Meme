@@ -21,6 +21,15 @@ use Symfony\Component\Filesystem\Filesystem;
 class Move extends Task
 {
 	/**
+	 * @var string
+	 */
+	protected $from;
+	/**
+	 * @var string
+	 */
+	protected $to;
+
+	/**
 	 * Удаление или переименование файла или каталога
 	 *
 	 * @param string $from Имя файла или каталога
@@ -28,9 +37,15 @@ class Move extends Task
 	 */
 	public function __construct($from, $to)
 	{
+		$this->from = $from;
+		$this->to = $to;
+	}
+
+	public function run()
+	{
 		Output::info(">> Start Move\\Rename task");
-		Output::comment("\tMove\\Rename {$from} to {$to}");
+		Output::comment("\tMove\\Rename {$this->from} to {$this->to}");
 		$fs = new Filesystem();
-		$fs->rename($from, $to);
+		$fs->rename($this->from, $this->to);
 	}
 }

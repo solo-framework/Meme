@@ -6,7 +6,8 @@ use Meme\Project;
 use Meme\Task\Chmod;
 use Meme\Task\Copy;
 use Meme\Task\Mkdir;
-use Meme\Task\Replace;
+use Meme\Task\ReplaceInFile;
+use Meme\Task\ReplaceInString;
 use Meme\Task\SSH\ScpSend;
 use Meme\Task\SSH\Ssh;
 use Meme\Task\SSH\SshCommand;
@@ -104,6 +105,26 @@ $mT = new Target("middle", function(){
 
 $end = new Target("end", function(){
 	Output::info("Hello from end!");
+
+//	$ssh = new SshConnection("46.188.16.48", 10022); // runtime.pro
+//	$ssh->authPublicKey("afi", "./run.pub", "./run.priv");
+//
+//	(new SshCommand($ssh, "cd / && ls -l", true))
+//		->run();
+
+//	(new \Meme\Task\Command("ls -l"))
+//		->setTimeout(1000)
+//		->setVerbose(true)
+//		->run();
+//
+//	(new Mkdir("./lala4"))
+//		->setMode(0755)
+//		->run();
+
+	$str = "Hello, %username%";
+	$res = (new ReplaceInString($str,  ["/%username%/i", "/Hello/"], ["world", "lalala"]))->run();
+//	print_r($res);
+
 });
 
 //$project->addTarget($startTarget);

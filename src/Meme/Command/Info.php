@@ -42,7 +42,7 @@ class Info extends BaseCommand
 		Output::info("You have " . count($cnf) . " env(s):");
 
 		$table = new Table($output);
-		$table->setHeaders(array("Environment name", "Status"));
+		$table->setHeaders(array("Environment name", "alias", "Status"));
 		$rows = array();
 
 		foreach ($cnf as $k => $v)
@@ -50,11 +50,11 @@ class Info extends BaseCommand
 			$cnfFile = "{$configDir}/{$k}.php";
 			$ok = "";
 			if (is_file($cnfFile))
-				$ok = "ok";
+				$ok = "ok (command to run: meme run -e {$k})";
 			else
 				$ok = "file {$cnfFile} doesn't exist";
 
-			$rows[] = array($v['name'], $ok);
+			$rows[] = array($v['name'], $k, $ok);
 
 			//Output::info("{$k}: {$v['name']} {$ok}");
 		}

@@ -19,19 +19,39 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Copy extends Task
 {
+	/**
+	 * @var
+	 */
+	protected $files;
+	/**
+	 * @var
+	 */
+	protected $destination;
+	/**
+	 * @var bool
+	 */
+	protected $overwrite;
+
 	public function __construct($files, $destination, $overwrite = true)
+	{
+		$this->files = $files;
+		$this->destination = $destination;
+		$this->overwrite = $overwrite;
+	}
+
+	public function run()
 	{
 		Output::taskHeader("Start Copy task");
 
 		try
 		{
 			$fs = new Filesystem();
-			if ($files instanceof FileSet)
-				$files = $files->getFiles(true);
+			if ($this->files instanceof FileSet)
+				$files = $this->files->getFiles(true);
 			else
-				$files = (array)$files;
+				$files = (array)$this->files;
 
-			$toDir = trim($destination) . DIRECTORY_SEPARATOR;
+			$toDir = trim($this->destination) . DIRECTORY_SEPARATOR;
 			foreach ($files as $file)
 			{
 				// пустые каталоги копировать не получается, просто создаем
@@ -52,5 +72,16 @@ class Copy extends Task
 		{
 			Output::error($e->getMessage());
 		}
+	}
+
+	/**
+	 * @param boolean $overwrite
+	 *
+	 * @return $this
+	 */
+	public function setOverwrite($overwrite)
+	{
+		$this->overwrite = $overwrite;
+		return $this;
 	}
 }
