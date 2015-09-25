@@ -19,5 +19,15 @@ class Boo extends Task
 	{
 		Output::taskHeader("HELO from BOOOOO with {$link}");
 	}
+
+	/**
+	 * Выполнение действия
+	 *
+	 * @return mixed
+	 */
+	public function run()
+	{
+		Output::taskHeader("Boo task started");
+	}
 }
 

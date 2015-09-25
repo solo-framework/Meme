@@ -121,9 +121,15 @@ $end = new Target("end", function(){
 //		->setMode(0755)
 //		->run();
 
-	$str = "Hello, %username%";
-	$res = (new ReplaceInString($str,  ["/%username%/i", "/Hello/"], ["world", "lalala"]))->run();
-//	print_r($res);
+	$target = "../../box";
+	$dest = "../backup/tmp";
+
+	$set = new FileSet($target, [], []);
+
+
+	(new Copy($set, $dest))->setIncludeBaseDirectory(false)->run();
+
+
 
 });
 
