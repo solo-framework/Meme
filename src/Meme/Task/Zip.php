@@ -79,7 +79,7 @@ class Zip extends Task
 				}
 			}
 
-			Output::comment("Created zip file {$this->zipName}");
+			Output::comment("Creating zip file {$this->zipName}");
 		}
 		else
 		{
