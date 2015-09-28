@@ -121,13 +121,13 @@ $end = new Target("end", function(){
 //		->setMode(0755)
 //		->run();
 
-	$target = "../../box";
-	$dest = "../backup/tmp";
+	$target = "../.idea";
+	$dest = "../backup/";
 
 	$set = new FileSet($target, [], []);
 
 
-	(new Copy($set, $dest))->setIncludeBaseDirectory(false)->run();
+	(new Copy($set, $dest))->setIncludeBaseDirectory(true)->run();
 
 
 
