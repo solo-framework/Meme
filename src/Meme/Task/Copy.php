@@ -107,7 +107,9 @@ class Copy extends Task
 			$toDir = trim($this->destination) . DIRECTORY_SEPARATOR;
 			foreach ($files as $file)
 			{
-				$dest = ltrim($file, "\/.");
+				// удалить ведущие ../
+				$dest = preg_replace('~(?:\.\./)+~', '/', $file);
+				echo "{$dest}\n";
 
 				if (!$this->includeBaseDir && $this->baseDir)
 				{
