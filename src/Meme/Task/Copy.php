@@ -97,7 +97,6 @@ class Copy extends Task
 			{
 				$files = $this->files->getFiles(true);
 				$this->baseDir =  ltrim($this->files->getBaseDir(), "\/.");
-				echo "{$this->baseDir}\n\n";
 			}
 			else
 			{
@@ -109,7 +108,6 @@ class Copy extends Task
 			{
 				// удалить ведущие ../
 				$dest = preg_replace('~(?:\.\./)+~', '/', $file);
-				echo "{$dest}\n";
 
 				if (!$this->includeBaseDir && $this->baseDir)
 				{
