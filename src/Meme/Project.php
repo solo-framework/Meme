@@ -21,6 +21,8 @@ class Project
 
 	protected $startTarget = "default";
 
+	protected $fnError = null;
+
 	/**
 	 * Конструктор
 	 *
@@ -29,7 +31,7 @@ class Project
 	public function __construct($name)
 	{
 		$this->name = $name;
-
+		$this->fnError = function(){};
 	}
 
 	/**
@@ -107,6 +109,30 @@ class Project
 			throw new \Exception("Target '{$name}' is not defined");
 		else
 			return $this->targets[$name];
+	}
+
+	/**
+	 * Установка функции, выполняемой при ошибке
+	 *
+	 * @param callable $fn
+	 */
+	public function onError($fn)
+	{
+		$this->fnError = $fn;
+	}
+
+	/**
+	 * Выполнение функции обработки ошибок
+	 *
+	 * @param \Exception $exc
+	 */
+	public function runOnError(\Exception $exc)
+	{
+		if ($this->fnError)
+		{
+			$fn = $this->fnError;
+			$fn($exc);
+		}
 	}
 }
 

@@ -76,6 +76,7 @@ class Run extends BaseCommand
 
 		parent::execute($input, $output);
 
+		$project = null;
 		try
 		{
 			Config::init($envName, $yml, $additionalFile);
@@ -83,6 +84,7 @@ class Run extends BaseCommand
 
 			include $env;
 			$project->run($targetName);
+			return 0;
 		}
 		catch (\Exception $e)
 		{
@@ -93,6 +95,10 @@ class Run extends BaseCommand
 				Output::error("\n---------------Error----------------");
 				Output::error($e->getTraceAsString());
 			}
+
+			$project->runOnError($e);
+
+			return 1;
 		}
 	}
 }

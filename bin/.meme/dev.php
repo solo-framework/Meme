@@ -21,6 +21,9 @@ use Meme\Types\FileSet;
  */
 
 $project->setStartTarget("middle");
+$project->onError(function ($exc) {
+	print_r($exc->getMessage());
+});
 
 //
 // Write your targets and task below
@@ -121,15 +124,12 @@ $end = new Target("end", function(){
 //		->setMode(0755)
 //		->run();
 
-	$target = "../.idea";
-	$dest = "../backup/";
+//	$target = "../.idea";
+//	$dest = "../backup/";
+//	$set = new FileSet($target, [], []);
+//	(new Copy($set, $dest))->setIncludeBaseDirectory(true)->run();
 
-	$set = new FileSet($target, [], []);
-
-
-	(new Copy($set, $dest))->setIncludeBaseDirectory(true)->run();
-
-
+	throw new \Exception("lalaa");
 
 });
 
