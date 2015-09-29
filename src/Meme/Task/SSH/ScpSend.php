@@ -45,6 +45,7 @@ class ScpSend extends Task
 	 * @param $toDir
 	 * @param $file
 	 * @param null $mode
+	 * @param bool $autocreate
 	 */
 	public function __construct(SshConnection $ssh, $toDir, $file, $mode = null, $autocreate = true)
 	{
@@ -53,6 +54,32 @@ class ScpSend extends Task
 		$this->file = $file;
 		$this->mode = $mode;
 		$this->autocreate = $autocreate;
+	}
+
+	/**
+	 * Разрешать создание каталогов, существующих в пути записываемого файла
+	 *
+	 * @param bool $autocreate True or False
+	 *
+	 * @return ScpSend
+	 */
+	public function setAutocreate($autocreate)
+	{
+		$this->autocreate = $autocreate;
+		return $this;
+	}
+
+	/**
+	 * Устанавливает разрешения на созданный каталог
+	 *
+	 * @param int $mode Permissions on the new directory.
+	 *
+	 * @return ScpSend
+	 */
+	public function setFileMode($mode)
+	{
+		$this->mode = $mode;
+		return $this;
 	}
 
 	/**
@@ -74,16 +101,24 @@ class ScpSend extends Task
 			throw new \Exception("Could not open local file '{$localEndpoint}'");
 
 		$file = ltrim($this->file, ".\/");
+
+		if (!$this->autocreate)
+			$file = basename($file);
+
 		$remoteEndpoint = $path . strtr($file, '\\', '/');
 
 		Output::comment("\t Send from '{$localEndpoint}' to '{$remoteEndpoint}'");
 
 		$sftp = null;
 		if ($this->autocreate)
+		{
 			$sftp = ssh2_sftp($this->connection);
-
-		if ($this->autocreate)
 			ssh2_sftp_mkdir($sftp, dirname($remoteEndpoint), (is_null($this->mode) ? 0777 : $this->mode), true);
+		}
+
+
+//		if ($this->autocreate)
+//			ssh2_sftp_mkdir($sftp, dirname($remoteEndpoint), (is_null($this->mode) ? 0777 : $this->mode), true);
 
 		if (!is_null($this->mode))
 			$ret = @ssh2_scp_send($this->connection, $localEndpoint, $remoteEndpoint, $this->mode);

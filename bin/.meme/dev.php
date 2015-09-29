@@ -129,7 +129,6 @@ $end = new Target("end", function(){
 //	$set = new FileSet($target, [], []);
 //	(new Copy($set, $dest))->setIncludeBaseDirectory(true)->run();
 
-	throw new \Exception("lalaa");
 
 });
 
