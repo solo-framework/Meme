@@ -22,7 +22,7 @@ class Config
 
 	public static function init($envName, $configFile, $additionalConfigFile)
 	{
-		$yaml = Yaml::parse($configFile);
+		$yaml = Yaml::parse(file_get_contents($configFile));
 
 		if ($additionalConfigFile)
 		{

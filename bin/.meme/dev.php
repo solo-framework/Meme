@@ -129,7 +129,8 @@ $end = new Target("end", function(){
 //	$set = new FileSet($target, [], []);
 //	(new Copy($set, $dest))->setIncludeBaseDirectory(true)->run();
 
-
+	(new \Meme\Task\Zip("./out.zip", new FileSet("../vendor", [])))
+		->run();
 });
 
 //$project->addTarget($startTarget);

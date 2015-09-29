@@ -30,6 +30,8 @@ class Zip extends Task
 	 */
 	private $fileset;
 
+	protected $baseDir = "";
+
 	/**
 	 * Создание архива файлов
 	 *
@@ -47,6 +49,19 @@ class Zip extends Task
 		return str_replace("\\", "/", $string);
 	}
 
+	protected function removeLeadingDots($path)
+	{
+		// удалить ведущие ../
+		return preg_replace('~(?:\.\./)+~', '/', $path);
+	}
+
+	protected function removBaseDir($path)
+	{
+		if (substr($path, 0, strlen($this->baseDir)) == $this->baseDir)
+			return substr($path, strlen($this->baseDir));
+		return "";
+	}
+
 	/**
 	 * Выполнение действия
 	 *
@@ -56,7 +71,7 @@ class Zip extends Task
 	{
 		Output::taskHeader("Start Zip task");
 		$files = $this->fileset->getFiles(true);
-		$baseDir = $this->normalizeSlashes(rtrim($this->fileset->getBaseDir(), '\/') . "/");
+		$this->baseDir = $this->removeLeadingDots($this->normalizeSlashes(rtrim($this->fileset->getBaseDir(), '\/') . "/"));
 
 		$zip = new \ZipArchive();
 		$res = $zip->open($this->zipName, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE);
@@ -66,11 +81,12 @@ class Zip extends Task
 			{
 				$fileName = trim($file);
 				$fname = $this->normalizeSlashes($fileName);
-				$fname = str_replace($baseDir, "", $fname);
+
+				$fname = $this->removeLeadingDots($fname);
+				$fname = $this->removBaseDir($fname);
 
 				if (is_dir($file))
 				{
-					$fname = "./" . ltrim($fname, '\/');
 					$zip->addEmptyDir($fname);
 				}
 				else
