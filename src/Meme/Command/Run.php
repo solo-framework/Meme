@@ -13,8 +13,10 @@ namespace Meme\Command;
 use Herrera\Annotations\Exception\Exception;
 use Meme\Config;
 use Meme\Output;
+use Meme\Params;
 use Meme\Project;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,11 +44,34 @@ class Run extends BaseCommand
 				)
 				->addOption("debug", "d", InputOption::VALUE_OPTIONAL, "Run in debug mode")
 				->addOption("target", "t", InputOption::VALUE_OPTIONAL, "Execute a concrete target")
+//				->addArgument('option', "o", InputArgument::OPTIONAL)
+				->addOption('option', 'o', InputOption::VALUE_OPTIONAL, "Additional params in JSON format")
 		;
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		if ($input->getOption("option"))
+		{
+			$o = $input->getOption("option");
+			$obj = null;
+
+			if (is_file($o))
+			{
+				$json = file_get_contents($o);
+				$obj = json_decode($json);
+			}
+			else
+			{
+				$obj = json_decode($o);
+			}
+
+			if (null == $obj)
+				throw new \Exception("Incorrect option string");
+
+			Params::set($obj);
+		}
+
 		$this->isDebug = $input->hasParameterOption(array("-d", "--debug"));
 		$envName = $input->getOption("env");
 		if (!$envName)

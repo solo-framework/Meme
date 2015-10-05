@@ -1,6 +1,7 @@
 <?php
 
 use Meme\Output;
+use Meme\Params;
 use Meme\Project;
 
 use Meme\Task\Chmod;
@@ -109,6 +110,9 @@ $mT = new Target("middle", function(){
 $end = new Target("end", function(){
 	Output::info("Hello from end!");
 
+	$servers = Params::get("servers");
+	print_r($servers);
+
 //	$ssh = new SshConnection("46.188.16.48", 10022); // runtime.pro
 //	$ssh->authPublicKey("afi", "./run.pub", "./run.priv");
 //
@@ -129,8 +133,8 @@ $end = new Target("end", function(){
 //	$set = new FileSet($target, [], []);
 //	(new Copy($set, $dest))->setIncludeBaseDirectory(true)->run();
 
-	(new \Meme\Task\Zip("./out.zip", new FileSet("../vendor", [])))
-		->run();
+//	(new \Meme\Task\Zip("./out.zip", new FileSet("../vendor", [])))
+//		->run();
 });
 
 //$project->addTarget($startTarget);
