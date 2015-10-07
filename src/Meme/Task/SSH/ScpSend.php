@@ -116,10 +116,6 @@ class ScpSend extends Task
 			ssh2_sftp_mkdir($sftp, dirname($remoteEndpoint), (is_null($this->mode) ? 0777 : $this->mode), true);
 		}
 
-
-//		if ($this->autocreate)
-//			ssh2_sftp_mkdir($sftp, dirname($remoteEndpoint), (is_null($this->mode) ? 0777 : $this->mode), true);
-
 		if (!is_null($this->mode))
 			$ret = @ssh2_scp_send($this->connection, $localEndpoint, $remoteEndpoint, $this->mode);
 		else
@@ -128,6 +124,8 @@ class ScpSend extends Task
 		if ($ret === false)
 			throw new \Exception("Could not create remote file '" . $remoteEndpoint . "'");
 
+		// Add this to flush buffers/close session
+		$this->ssh->close();
 	}
 
 }
