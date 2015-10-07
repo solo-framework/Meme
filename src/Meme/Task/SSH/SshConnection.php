@@ -87,5 +87,10 @@ class SshConnection
 	{
 		return $this->connection;
 	}
+
+	public function close()
+	{
+		ssh2_exec($this->connection, 'exit');
+	}
 }
 
