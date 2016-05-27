@@ -5,6 +5,7 @@ use Meme\Params;
 use Meme\Project;
 
 use Meme\Task\Chmod;
+use Meme\Task\Command;
 use Meme\Task\Copy;
 use Meme\Task\Mkdir;
 use Meme\Task\ReplaceInFile;
@@ -55,6 +56,20 @@ $f =  new Target("test", function(){
  * Таск бла бла бла
  */
 $mT = new Target("middle", function(){
+
+	$cmd = new Command("dpkg-query -W -f='\${Package} \${Status} \${Version}' mc");
+	$cmd->setIgnoreError(true)->setVerbose(false);
+	$cmd->run();
+	
+	if ($cmd->isError)
+	{
+		print_r("error");
+		print_r($cmd->exitStatusCode);
+	}
+
+
+//	print_r(\Meme\Config::getAll());
+
 
 //	$cmd = new \Meme\Task\Command("php ./loop.php > /dev/null 2>&1 &");
 //	$cmd = new \Meme\Task\Command("php ./loop.php </dev/null & ");

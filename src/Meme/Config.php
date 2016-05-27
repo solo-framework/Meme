@@ -26,8 +26,7 @@ class Config
 
 		if ($additionalConfigFile)
 		{
-			$add = Yaml::parse($additionalConfigFile);
-
+			$add = Yaml::parse(file_get_contents($additionalConfigFile));
 			self::recursiveMerge($yaml, $add);
 		}
 
@@ -70,9 +69,14 @@ class Config
 		return self::$cnf[$key];
 	}
 
+	public static function getAll()
+	{
+		return self::$cnf;
+	}
+
 	public static function read($configFile)
 	{
-		self::$yaml = Yaml::parse($configFile);
+		self::$yaml = Yaml::parse(file_get_contents($configFile));
 		return self::$yaml;
 	}
 

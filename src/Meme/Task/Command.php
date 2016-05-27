@@ -24,7 +24,7 @@ class Command extends Task
 	/**
 	 * @var Process
 	 */
-	protected $process = null;
+	public $process = null;
 
 	protected $result = null;
 
@@ -45,6 +45,14 @@ class Command extends Task
 
 	public $timeout = 60;
 	public $options = array();
+
+	/***
+	 * True if error occurred
+	 *
+	 * @var bool
+	 */
+	public $isError = false;
+	public $exitStatusCode = 0;
 
 
 	/**
@@ -101,7 +109,7 @@ class Command extends Task
 		Output::taskHeader("Start Command task");
 		Output::comment("executing a command '{$this->command}'");
 
-		$this->process->run(function($a, $b){
+		$this->exitStatusCode = $this->process->run(function($a, $b){
 
 			if ($this->verbose)
 				Output::info($b);
@@ -109,6 +117,7 @@ class Command extends Task
 
 		if (!$this->process->isSuccessful())
 		{
+			$this->isError = true;
 			if (!$this->ignoreError)
 				throw new \Exception($this->process->getErrorOutput());
 			else
