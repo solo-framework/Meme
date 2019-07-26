@@ -60,7 +60,7 @@ $mT = new Target("middle", function(){
 	$cmd = new Command("dpkg-query -W -f='\${Package} \${Status} \${Version}' mc");
 	$cmd->setIgnoreError(true)->setVerbose(false);
 	$cmd->run();
-	
+
 	if ($cmd->isError)
 	{
 		print_r("error");

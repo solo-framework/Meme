@@ -24,6 +24,6 @@ spl_autoload_register(array($loader, 'autoLoad'));
 // Clean arguments
 //array_shift($argv);
 
-$console = new Meme\Meme("0.0.3");
+$console = new Meme\Meme("%VERSION%");
 $exitCode = $console->run();
 exit($exitCode);
